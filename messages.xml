@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?><messages>
+    <message id="1" moment="13:14:00 07-08-2020" receiver="You" sender="Me">Example message</message>
+    <message id="2" moment="20:14:00 08-08-2020" receiver="Me" sender="you">Example message</message>
+</messages>
+
