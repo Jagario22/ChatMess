@@ -70,7 +70,7 @@ public class ChatMessengerApp extends JFrame {
         return loginPanelView;
     }
 
-    JPanel getChatPanelView(boolean doGetMessages) {
+    ChatPanelView getChatPanelView(boolean doGetMessages) {
         ChatPanelView chatPanelView = VIEWS.getview("chat");
         chatPanelView.initModel(doGetMessages);
         return chatPanelView;

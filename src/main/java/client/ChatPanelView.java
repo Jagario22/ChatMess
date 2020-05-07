@@ -3,8 +3,13 @@ package client;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
+import javax.swing.text.Element;
+import javax.swing.text.html.HTML;
+import javax.swing.text.html.HTMLDocument;
 import java.awt.*;
+import java.io.IOException;
 
 @Slf4j
 public class ChatPanelView extends AbstractView {
@@ -25,6 +30,23 @@ public class ChatPanelView extends AbstractView {
 
     public static ChatPanelView getInstance() {
         return ChatPanelViewHolder.INSTANCE;
+    }
+
+
+    public void modelChangedNotification(String newMessages) {
+        if (newMessages.length() != 0) {
+            log.trace("New messages arrived: " + newMessages);
+            HTMLDocument document = (HTMLDocument) getMessagesTextPane().getStyledDocument();
+            Element element = document.getElement(document.getRootElements()[0],
+                    HTML.Attribute.ID, "body");
+            try {
+                document.insertBeforeEnd(element, newMessages);
+            } catch (BadLocationException | IOException e) {
+                log.error("Bad location error: " + e.getMessage());
+            }
+            getMessagesTextPane().setCaretPosition(document.getLength());
+            log.trace("Messages text update");
+        }
     }
 
     private static class ChatPanelViewHolder {
