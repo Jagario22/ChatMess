@@ -13,10 +13,22 @@ import java.util.Timer;
 public class ChatMessengerApp extends JFrame {
     public static final long DELAY = 100;
     public static final long PERIOD = 1000;
+
     private static final Model MODEl;
     private static final Controller CONTROLLER;
     private static final ViewFactory VIEWS;
+    public static final int WIDTH = 400;
+    public static final int HEIGHT = 600;
+
     private static Timer timer;
+
+
+    public static void main(String[] args) {
+        JFrame frame = new ChatMessengerApp();
+        frame.setVisible(true);
+        frame.repaint();
+    }
+
 
     static {
         MODEl = Model.getInstance();
@@ -31,11 +43,7 @@ public class ChatMessengerApp extends JFrame {
         initialize();
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new ChatMessengerApp();
-        frame.setVisible(true);
-        frame.repaint();
-    }
+
     private void initialize() {
         AbstractView.setParent(this);
         MODEl.setParent(this);
@@ -44,10 +52,12 @@ public class ChatMessengerApp extends JFrame {
         VIEWS.viewRegister("login", LoginPanelView.getInstance());
         VIEWS.viewRegister("chat", ChatPanelView.getInstance());
         timer = new Timer("Server request for update messages");
+
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //this.setSize(400,600);
+        this.setSize(WIDTH, HEIGHT);
         this.setLocationRelativeTo(null);
         this.setTitle("Chat Messenger");
+
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BorderLayout());
         contentPanel.add(getLoginPanel(), BorderLayout.CENTER);

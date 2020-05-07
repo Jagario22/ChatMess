@@ -7,11 +7,12 @@ import javax.swing.text.DefaultCaret;
 import java.awt.*;
 
 @Slf4j
-public class ChatPanelView extends AbstractView{
+public class ChatPanelView extends AbstractView {
     public static final String SEND_ACTION_COMMAND = "send";
     public static final String LOGOUT_ACTION_COMMAND = "logout";
+
     private JScrollPane messagesListPanel;
-    private JTextPane messagesTextPanel;
+    private JTextPane messagesTextPane;
     private JPanel textMessagePanel;
     private JButton sendMessageButton;
     private JTextField textMessageField;
@@ -21,15 +22,18 @@ public class ChatPanelView extends AbstractView{
         super();
         initialize();
     }
+
     public static ChatPanelView getInstance() {
         return ChatPanelViewHolder.INSTANCE;
     }
+
     private static class ChatPanelViewHolder {
-        private static final ChatPanelView  INSTANCE = new ChatPanelView();
+        private static final ChatPanelView INSTANCE = new ChatPanelView();
     }
+
     @Override
     public void initialize() {
-        this.setName("chatPannelView");
+        this.setName("chatPanelView");
         this.setLayout(new BorderLayout());
         JPanel header = new JPanel(new BorderLayout());
         header.add(new JLabel("Hello, " + parent.getModel().getCurrentUser() + "!"),
@@ -45,20 +49,15 @@ public class ChatPanelView extends AbstractView{
 
     @Override
     public void clearFiels() {
-        getMessagesTextPanel().setText("");
+        getMessagesTextPane().setText("");
         getTextMessageField().setText("");
-    }
-
-    @Override
-    public void initModel() {
-
     }
 
 
     public void initModel(boolean getMessages) {
         parent.getModel().setLastMessageText("");
         if (getMessages) {
-            getMessagesTextPanel().setText(parent.getModel().messagesToString());
+            getMessagesTextPane().setText(parent.getModel().messagesToString());
         }
         getTextMessageField().requestFocusInWindow();
         parent.getRootPane().setDefaultButton(getSendMessageButton());
@@ -66,26 +65,26 @@ public class ChatPanelView extends AbstractView{
 
     public JScrollPane getMessagesListPanel() {
         if (messagesListPanel == null) {
-            messagesListPanel = new JScrollPane(getMessagesTextPanel());
+            messagesListPanel = new JScrollPane(getMessagesTextPane());
             messagesListPanel.setSize(getMaximumSize());
             messagesListPanel
                     .setVerticalScrollBarPolicy(
-                    ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+                            ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         }
         return messagesListPanel;
     }
 
-    public JTextPane getMessagesTextPanel() {
-        if (messagesTextPanel == null) {
-            messagesTextPanel = new JTextPane();
-            messagesTextPanel.setContentType("text/html");
-            messagesTextPanel.setEditable(false);
-            messagesTextPanel.setName("messagesTextArea");
-            ((DefaultCaret)messagesTextPanel.getCaret())
+    public JTextPane getMessagesTextPane() {
+        if (messagesTextPane == null) {
+            messagesTextPane = new JTextPane();
+            messagesTextPane.setContentType("text/html");
+            messagesTextPane.setEditable(false);
+            messagesTextPane.setName("messagesTextArea");
+            ((DefaultCaret) messagesTextPane.getCaret())
                     .setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
         }
-        return messagesTextPanel;
+        return messagesTextPane;
 
     }
 

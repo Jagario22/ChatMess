@@ -17,7 +17,7 @@ public class ShowChatViewCommand implements Command {
         Utility.messagesUpdate(app);
         view.clearFiels();
         view.setVisible(false);
-        app.setTimer(new Timer()); //???
+        app.setTimer(new Timer());
         app.getTimer().scheduleAtFixedRate(new UpdateMessageTask(app),
                 ChatMessengerApp.DELAY, ChatMessengerApp.PERIOD);
         app.showChatPanelView();

@@ -2,7 +2,7 @@ package client;
 
 
 
-public class LoginErrorCommand implements Command {
+public class  LoginErrorCommand implements Command {
     private LoginPanelView view;
     public LoginErrorCommand(LoginPanelView view) {
         this.view = view;

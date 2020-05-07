@@ -23,6 +23,6 @@ public abstract class AbstractView extends JPanel {
         panel.add(label);
         panel.add(field);
     }
-    public abstract void initModel();
+
 
 }

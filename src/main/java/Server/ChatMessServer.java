@@ -23,7 +23,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
-public class ChatMessChat {
+public class ChatMessServer {
     public static final int PORT = 7070;
     private static final int SERVER_TIMEOUT = 500;
     private static final String XML_FILE_NAME = "messages.xml";//?
@@ -33,6 +33,7 @@ public class ChatMessChat {
             Collections.synchronizedSortedMap(new TreeMap<Long, Message>());
 
     public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException {
+
         // Load xml files with prev messages
         loadMessageXMLFile();
 

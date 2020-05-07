@@ -18,12 +18,14 @@ import java.util.Collection;
 public class MessageBuilder {
     public static String buildDocument(Document document, Collection<Message> messagesList) {
         log.debug("Create document start");
+
         //Create DOM of XML document
         Element rootElement = document.createElement("messages");
         document.appendChild(rootElement);
+
         log.trace("Create root element: " + rootElement.toString());
-        for (Message message: messagesList)
-        {
+
+        for (Message message : messagesList) {
             Element messageElement = document.createElement("message");
             rootElement.appendChild(messageElement);
             if (message.getId() != null) {

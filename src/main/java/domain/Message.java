@@ -19,7 +19,7 @@ public class Message implements Serializable, Comparable <Message> {
                 .append((userNT.length() != 0) ? ("-> " + userNT) : "")
                 .append(":</b><br /><message>")
                 .append(text)
-                .append("</message><br /> <div style='alignt=right;font-size:small;'>")
+                .append("</message><br /> <div style='align=right;font-size:small;'>")
                 .append((new SimpleDateFormat("HH:mm:ss dd-MMM-yyyy"))
                         .format(moment.getTime().getTime()))
                 .append("</div><br /></p>")

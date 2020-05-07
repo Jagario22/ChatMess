@@ -12,6 +12,7 @@ import java.text.ParseException;
 import static client.ChatPanelView.LOGOUT_ACTION_COMMAND;
 import static client.LoginPanelView.ACTION_COMMAND_LOGIN;
 import static client.ChatPanelView.SEND_ACTION_COMMAND;
+
 @Slf4j
 public class Controller implements ActionListener {
     private ChatMessengerApp parent;
@@ -24,13 +25,16 @@ public class Controller implements ActionListener {
         return ControllerHolder.INSTANCE;
     }
 
+    private static class ControllerHolder {
+        private static final Controller INSTANCE = new Controller();
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
             action(e);
-        }catch (ParseException parseEx)
-        {
-            log.error("Unknown command: " + parseEx.getMessage());
+        } catch (ParseException parseEx) {
+            log.error(parseEx.getMessage());
         }
         command.execute();
     }
@@ -41,11 +45,11 @@ public class Controller implements ActionListener {
             case ACTION_COMMAND_LOGIN: {
                 LoginPanelView view = Utility.findParent(
                         (Component) e.getSource(), LoginPanelView.class);
-                if (EmailValidator.getInstance().isValid(view.getUserNameFiels().getText()) ||
+                if (EmailValidator.getInstance().isValid(view.getUserNameField().getText()) ||
                         !InetAddressValidator.getInstance().isValid(view.getServerIpAddressField().getText())) {
                     command = new LoginErrorCommand(view);
                 } else {
-                    parent.getModel().setCurrentUser(view.getUserNameFiels().getText());
+                    parent.getModel().setCurrentUser(view.getUserNameField().getText());
                     parent.getModel().setServerIPAddress(view.getServerIpAddressField().getText());
                     command = new ShowChatViewCommand(parent, view);
                 }
@@ -66,14 +70,11 @@ public class Controller implements ActionListener {
             }
             break;
             default:
-                throw new ParseException("Unknown command", + 0);
+                throw new ParseException("Unknown command: " + commandName, 0);
 
         }
     }
 
-    private static class ControllerHolder {
-        private static final Controller INSTANCE = new Controller();
-    }
 
     public void setParent(ChatMessengerApp parent) {
         this.parent = parent;

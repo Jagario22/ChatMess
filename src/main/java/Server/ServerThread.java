@@ -21,6 +21,9 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class ServerThread extends  Thread{
+    public static final String METHOD_GET = "GET";
+    public static final String METHOD_PUT = "PUT";
+    public static final String END_LINE_MESSAGE = "END";
     private final Socket socket;
     private final AtomicInteger messageid;
 
@@ -32,14 +35,12 @@ public class ServerThread extends  Thread{
         return messagesList;
     }
 
-    private final Map<Long, Message> messagesList; //??
+    private final Map<Long, Message> messagesList;
     private final BufferedReader in;
     private final PrintWriter out;
 
 
     public ServerThread(Socket socket, AtomicInteger messageId, Map<Long, Message> messagesList) throws IOException {
-
-
         this.socket = socket;
         this.messageid = messageId;
         this.messagesList = messagesList;
@@ -55,43 +56,52 @@ public class ServerThread extends  Thread{
             String requestLine = in.readLine();
             log.debug(requestLine);
             switch (requestLine) {
-                case "GET":
+                case METHOD_GET:
                     log.debug("get");
                     Long lastId = Long.valueOf(in.readLine());
                     log.debug(String.valueOf(lastId));
                     List<Message> newMessages = messagesList.entrySet().stream()
                             .filter(message -> message.getKey().compareTo(lastId) > 0)
                             .map(Map.Entry::getValue).collect(Collectors.toList());
-                    //LOGGER.
+                    log.debug(newMessages.toString());
                     DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
                     DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
                     Document document = builder.newDocument();
-                    java.lang.String xmlContent = MessageBuilder.buildDocument(document, messagesList.values());
-                    //LOGGER
+                    java.lang.String xmlContent = MessageBuilder.buildDocument(document, newMessages);
                     out.println(xmlContent);
-                    out.println("END");
+                    out.println(END_LINE_MESSAGE);
                     out.flush();
                     break;
-                case "PUT":
+
+                case METHOD_PUT:
                     log.debug("put");
+
                     requestLine = in.readLine();
                     StringBuilder mesStr = new StringBuilder();
-                    while (!"END".equals(requestLine))
+
+
+                    while (!END_LINE_MESSAGE.equals(requestLine))
                     {
                         mesStr.append(requestLine);
                         requestLine = in.readLine();
                     }
+
                     log.debug(String.valueOf(mesStr));
+
                     SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
                     SAXParser parser = saxParserFactory.newSAXParser();
                     List<Message> messages = new ArrayList<>();
                     MessageParser saxp = new MessageParser(messageid, messages);
+
                     InputStream is = new ByteArrayInputStream(mesStr.toString().getBytes());
                     parser.parse(is,saxp);
+
+
                     for (Message message: messages)
                     {
                         messagesList.put(message.getId(), message);
                     }
+
                     log.trace("Echoing: " + messages);
                     out.println("OK");
                     out.flush();

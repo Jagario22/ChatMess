@@ -13,6 +13,14 @@ public class Model {
     private Set<Message> messages;
     private String serverIPAddress = "127.0.0.1";
 
+    private static class ModelHolder {
+        private static final Model INSTANCE = new Model();
+    }
+
+    public static Model getInstance() {
+        return ModelHolder.INSTANCE;
+    }
+
     public void initialize() {
         setMessages(new TreeSet<Message>(){
             @Override
@@ -47,16 +55,11 @@ public class Model {
 
     public void addMessages(List<Message> messages) {
         this.getMessages().addAll(messages);
-        parent.getChatPanelView(false).modelChangedNotification(messages.toString());
+        parent.getChatPanelView(false)
+            .modelChangedNotification(messages.toString());
     }
 
-    private static class ModelHolder {
-        private static final Model INSTANCE = new Model();
-    }
 
-    public static Model getInstance() {
-        return ModelHolder.INSTANCE;
-    }
     public ChatMessengerApp getParent() {
         return parent;
     }

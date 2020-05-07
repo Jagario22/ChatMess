@@ -13,7 +13,7 @@ public class LoginPanelView extends AbstractView {
     private JPanel loginPanel; //отображает все окно
     private  JPanel mainPanel; //поля ввода
     private JButton loginButton;
-    private JTextField userNameFiels;
+    private JTextField userNameField;
     private JTextField serverIpAddressField;
     private JLabel errorLabel;
 
@@ -44,14 +44,14 @@ public class LoginPanelView extends AbstractView {
     @Override
     public void clearFiels() {
         getErrorLabel().setVisible(false);
-        getUserNameFiels().setText("");
+        getUserNameField().setText("");
         getServerIpAddressField().setText(parent.getModel().getServerIPAddress());
     }
 
     public void initModel() {
         parent.getModel().setCurrentUser("");
         parent.getModel().setLoggedUser("");
-        getUserNameFiels().requestFocusInWindow();
+        getUserNameField().requestFocusInWindow();
         parent.getRootPane().setDefaultButton(getLoginButton());
 
     }
@@ -62,7 +62,7 @@ public class LoginPanelView extends AbstractView {
             loginPanel.setLayout(new BorderLayout());
             loginPanel.add(getMainPanel(), BorderLayout.NORTH);
             addLabeledFiled(getMainPanel(), "server ip-address", getServerIpAddressField());
-            addLabeledFiled(getMainPanel(), "name of user:", getUserNameFiels());
+            addLabeledFiled(getMainPanel(), "name of user:", getUserNameField());
             loginPanel.add(getLoginButton(), BorderLayout.SOUTH);
         }
         return loginPanel;
@@ -87,12 +87,12 @@ public class LoginPanelView extends AbstractView {
         return loginButton;
     }
 
-    public JTextField getUserNameFiels() {
-        if (userNameFiels == null) {
-            userNameFiels = new JTextField(12);
-            userNameFiels.setName("userNameField");
+    public JTextField getUserNameField() {
+        if (userNameField == null) {
+            userNameField = new JTextField(12);
+            userNameField.setName("userNameField");
         }
-        return userNameFiels;
+        return userNameField;
     }
 
     public JTextField getServerIpAddressField() {
