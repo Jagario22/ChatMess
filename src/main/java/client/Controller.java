@@ -45,7 +45,7 @@ public class Controller implements ActionListener {
             case ACTION_COMMAND_LOGIN: {
                 LoginPanelView view = Utility.findParent(
                         (Component) e.getSource(), LoginPanelView.class);
-                if (EmailValidator.getInstance().isValid(view.getUserNameField().getText()) ||
+                if (! EmailValidator.getInstance().isValid(view.getUserNameField().getText()) ||
                         !InetAddressValidator.getInstance().isValid(view.getServerIpAddressField().getText())) {
                     command = new LoginErrorCommand(view);
                 } else {
@@ -59,14 +59,14 @@ public class Controller implements ActionListener {
                 ChatPanelView view = Utility.findParent(
                         (Component) e.getSource(), ChatPanelView.class);
                 parent.getModel().setLastMessageText(view.getTextMessageField().getText());
-                command = new SendMessageCommand(parent, view);
+                //command = new SendMessageCommand(parent, view);
             }
             break;
             case LOGOUT_ACTION_COMMAND: {
                 ChatPanelView view = Utility.findParent(
                         (Component) e.getSource(), ChatPanelView.class);
                 parent.getModel().initialize();
-                command = new ShowLoginVewCommand(parent, view);
+               // command = new ShowLoginVewCommand(parent, view);
             }
             break;
             default:
