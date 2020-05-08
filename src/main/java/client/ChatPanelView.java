@@ -16,6 +16,7 @@ public class ChatPanelView extends AbstractView {
     public static final String SEND_ACTION_COMMAND = "send";
     public static final String LOGOUT_ACTION_COMMAND = "logout";
 
+    private JLabel promptLabel;
     private JScrollPane messagesListPanel;
     private JTextPane messagesTextPane;
     private JPanel textMessagePanel;
@@ -53,13 +54,18 @@ public class ChatPanelView extends AbstractView {
         private static final ChatPanelView INSTANCE = new ChatPanelView();
     }
 
+    public JLabel getPromptLabel() {
+        if (promptLabel == null)
+            promptLabel = new JLabel("Hello, " + parent.getModel().getLoggedUser() + "!");
+        return promptLabel;
+    }
+
     @Override
     public void initialize() {
         this.setName("chatPanelView");
         this.setLayout(new BorderLayout());
         JPanel header = new JPanel(new BorderLayout());
-        header.add(new JLabel("Hello, " + parent.getModel().getCurrentUser() + "!"),
-                BorderLayout.WEST);
+        header.add(getPromptLabel(), BorderLayout.WEST);
         header.add(getLogoutButton(), BorderLayout.EAST);
         this.add(header, BorderLayout.NORTH);
         this.add(getMessagesListPanel(), BorderLayout.CENTER);
@@ -81,6 +87,7 @@ public class ChatPanelView extends AbstractView {
         if (getMessages) {
             getMessagesTextPane().setText(parent.getModel().messagesToString());
         }
+        getPromptLabel().setText("Hello, " + parent.getModel().getLoggedUser() + "!");
         getTextMessageField().requestFocusInWindow();
         parent.getRootPane().setDefaultButton(getSendMessageButton());
     }

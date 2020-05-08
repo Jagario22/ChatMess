@@ -104,4 +104,8 @@ public class ChatMessengerApp extends JFrame {
         panel.setVisible(true);
         panel.repaint();
     }
+
+    public void showLoginPanelView() {
+        showPanel(getLoginPanel());
+    }
 }

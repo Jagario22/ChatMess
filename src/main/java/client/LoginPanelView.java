@@ -36,6 +36,8 @@ public class LoginPanelView extends AbstractView {
         this.setName("loginPanelView");
         this.setLayout(new BorderLayout());
         this.add(getLoginPanel(), BorderLayout.CENTER);
+        clearFiels();
+        initModel();
         InputMap im = getLoginButton().getInputMap();
         im.put(KeyStroke.getKeyStroke("ENTER"), "pressed");
         im.put(KeyStroke.getKeyStroke("released ENTER"), "released");
@@ -61,8 +63,8 @@ public class LoginPanelView extends AbstractView {
             loginPanel = new JPanel();
             loginPanel.setLayout(new BorderLayout());
             loginPanel.add(getMainPanel(), BorderLayout.NORTH);
-            addLabeledFiled(getMainPanel(), "server ip-address", getServerIpAddressField());
             addLabeledFiled(getMainPanel(), "name of user:", getUserNameField());
+            addLabeledFiled(getMainPanel(), "server ip-address", getServerIpAddressField());
             loginPanel.add(getLoginButton(), BorderLayout.SOUTH);
         }
         return loginPanel;

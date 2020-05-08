@@ -15,6 +15,7 @@ public class ShowChatViewCommand implements Command {
     @Override
     public void execute() {
         Utility.messagesUpdate(app);
+        app.getModel().setCurrentUser(view.getUserNameField().getText());
         view.clearFiels();
         view.setVisible(false);
         app.setTimer(new Timer());
