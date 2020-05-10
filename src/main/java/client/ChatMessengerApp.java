@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Timer;
 
 @Slf4j
@@ -21,10 +23,19 @@ public class ChatMessengerApp extends JFrame {
     public static final int HEIGHT = 600;
 
     private static Timer timer;
+    private static AppWindowListener AppWindowListener;
 
 
     public static void main(String[] args) {
         JFrame frame = new ChatMessengerApp();
+        frame.addWindowListener(new WindowAdapter(){
+            public void windowClosing(WindowEvent we){
+                if (!(LoginPanelView.getInstance().isVisible()))
+                    Utility.deleteUser((ChatMessengerApp) frame);
+                else
+                    System.exit(0);
+            }
+        });
         frame.setVisible(true);
         frame.repaint();
     }
@@ -41,6 +52,10 @@ public class ChatMessengerApp extends JFrame {
     public ChatMessengerApp() {
         super();
         initialize();
+    }
+
+    public static void setAppWindowListener(client.AppWindowListener appWindowListener) {
+        AppWindowListener = appWindowListener;
     }
 
 
