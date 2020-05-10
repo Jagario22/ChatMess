@@ -20,8 +20,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-import static Server.ServerThread.END_LINE_MESSAGE;
-import static Server.ServerThread.METHOD_GET;
+import static Server.ServerThread.*;
 
 
 @Slf4j
@@ -102,6 +101,40 @@ public class Utility {
                 log.error("Parse exception: " + e.getMessage());
             }
 
+        } catch (UnknownHostException e) {
+            log.error("Unknown host address" + e.getMessage());
+        }
+    }
+
+    public static void deleteUser(ChatMessengerApp app) {
+        InetAddress addr;
+        String result;
+        try {
+            addr = InetAddress.getByName(app.getModel().getServerIPAddress());
+            try (Socket socket = new Socket(addr, ChatMessServer.PORT);
+                 PrintWriter out = new PrintWriter(
+                         new BufferedWriter(
+                                 new OutputStreamWriter(
+                                         socket.getOutputStream()
+                                 )
+                         ), true
+                 );
+                 BufferedReader in = new BufferedReader(
+                         new InputStreamReader(
+                                 socket.getInputStream()
+                         )
+                 );) {
+                do {
+                    Model model = app.getModel();
+                    out.println(METHOD_DELETE);
+                    out.println(model.getLoggedUser());
+                    out.flush();
+                    result = in.readLine();
+                } while (!"OK".equals(result));
+
+            } catch (IOException e) {
+                log.error("Socket error: " + e.getMessage());
+            }
         } catch (UnknownHostException e) {
             log.error("Unknown host address" + e.getMessage());
         }

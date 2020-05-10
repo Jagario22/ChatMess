@@ -51,13 +51,13 @@ public class ChatMessServer {
             Socket socket;
             try {
                 socket = serverSocket.accept();
-                clients.addName(socket, "");
                 try {
                     new ServerThread(socket, id, messagesList, clients);
                 } catch (IOException e) {
                     log.error("IO error");
                     socket.close();
                 }
+
             } catch (SocketTimeoutException e) { //
             }
         }

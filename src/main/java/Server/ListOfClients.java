@@ -1,10 +1,14 @@
 package Server;
 
-import java.net.Socket;
-import java.util.HashMap;
+import lombok.extern.slf4j.Slf4j;
 
+import java.net.Socket;
+import java.util.*;
+
+@Slf4j
 public class ListOfClients {
-    private HashMap<Socket,String> userNames = new HashMap<Socket, String>();
+    //private HashMap<Socket,String> userNames = new HashMap<Socket, String>();
+    private List<String> userNames = new ArrayList<>();
     private ListOfClients() {
     }
 
@@ -18,23 +22,18 @@ public class ListOfClients {
         return str.toString();
     }
 
-    public HashMap<Socket, String> getUserNames() {
+    public List<String> getUserNames() {
         return userNames;
     }
 
-    public void removeName(Socket socket) {
-        userNames.remove(socket);
+    public void addName(String name) {
+        userNames.add(name);
     }
-
-    public void addName(Socket socket, String name) {
-        userNames.put(socket, name);
+    public void removeName(String name) {
+        userNames.remove(name);
     }
-
-    public boolean ContainsName(Socket name) {
-        if (userNames.containsKey(name) && userNames.get(name).equals(""))
-            return false;
-
-        return true;
+    public boolean ContainsName(String name) {
+        return userNames.contains(name);
     }
 
     public static ListOfClients getInstance() {

@@ -65,6 +65,7 @@ public class Controller implements ActionListener {
             case LOGOUT_ACTION_COMMAND: {
                 ChatPanelView view = Utility.findParent(
                         (Component) e.getSource(), ChatPanelView.class);
+                Utility.deleteUser(parent);
                 parent.getModel().initialize();
                 command = new ShowLoginVewCommand(parent, view);
             }

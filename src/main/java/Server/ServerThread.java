@@ -24,6 +24,7 @@ public class ServerThread extends  Thread{
     public static final String METHOD_GET = "GET";
     public static final String METHOD_PUT = "PUT";
     public static final String END_LINE_MESSAGE = "END";
+    public static final String METHOD_DELETE = "DELETE";
     private final Socket socket;
     private final AtomicInteger messageid;
     private final ListOfClients clients;
@@ -65,8 +66,8 @@ public class ServerThread extends  Thread{
                     String currentUser = in.readLine();
                     log.debug(currentUser);
 
-                    if (!clients.ContainsName(socket)) {
-                        clients.addName(socket, currentUser);
+                    if (!clients.ContainsName(currentUser)) {
+                        clients.addName(currentUser);
                         log.debug("Add name " + currentUser + "to clientsOnline + : " + clients.getUserNames());
                     }
                     List<Message> newMessages = messagesList.entrySet().stream()
@@ -86,7 +87,6 @@ public class ServerThread extends  Thread{
 
                 case METHOD_PUT:
                     log.debug("put");
-
                     requestLine = in.readLine();
                     StringBuilder mesStr = new StringBuilder();
 
@@ -118,6 +118,15 @@ public class ServerThread extends  Thread{
                     out.flush();
                     out.close();
                     break;
+
+                case METHOD_DELETE:
+                    requestLine = in.readLine();
+                    log.debug("Remove name + " + requestLine + " from clients");
+                    clients.removeName(requestLine);
+                    out.println("OK");
+                    out.flush();
+                    break;
+
                 default:
                     log.info("Unknown request: " + requestLine);
                     out.println("BAD REQUEST");
