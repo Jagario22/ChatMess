@@ -23,7 +23,6 @@ public class ChatMessengerApp extends JFrame {
     public static final int HEIGHT = 600;
 
     private static Timer timer;
-    private static AppWindowListener AppWindowListener;
 
 
     public static void main(String[] args) {
@@ -54,9 +53,6 @@ public class ChatMessengerApp extends JFrame {
         initialize();
     }
 
-    public static void setAppWindowListener(client.AppWindowListener appWindowListener) {
-        AppWindowListener = appWindowListener;
-    }
 
 
     private void initialize() {
