@@ -11,10 +11,19 @@ public class Model {
     private String lastMessageText;
     private long lastMessageId;
     private Set<Message> messages;
+    private List<String> userOnline = new ArrayList<String>();
     private String serverIPAddress = "127.0.0.1";
 
     private static class ModelHolder {
         private static final Model INSTANCE = new Model();
+    }
+
+    public List<String> getUserOnline() {
+        return userOnline;
+    }
+
+    public void setUserOnline(List<String> userOnline) {
+        this.userOnline = userOnline;
     }
 
     public static Model getInstance() {

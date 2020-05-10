@@ -26,6 +26,7 @@ public class ServerThread extends  Thread{
     public static final String END_LINE_MESSAGE = "END";
     private final Socket socket;
     private final AtomicInteger messageid;
+    private final ListOfClients clients;
 
     public AtomicInteger getMessageid() {
         return messageid;
@@ -40,10 +41,11 @@ public class ServerThread extends  Thread{
     private final PrintWriter out;
 
 
-    public ServerThread(Socket socket, AtomicInteger messageId, Map<Long, Message> messagesList) throws IOException {
+    public ServerThread(Socket socket, AtomicInteger messageId, Map<Long, Message> messagesList, ListOfClients clients) throws IOException {
         this.socket = socket;
         this.messageid = messageId;
         this.messagesList = messagesList;
+        this.clients = clients;
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
         start();
@@ -60,6 +62,13 @@ public class ServerThread extends  Thread{
                     log.debug("get");
                     Long lastId = Long.valueOf(in.readLine());
                     log.debug(String.valueOf(lastId));
+                    String currentUser = in.readLine();
+                    log.debug(currentUser);
+
+                    if (!clients.ContainsName(socket)) {
+                        clients.addName(socket, currentUser);
+                        log.debug("Add name " + currentUser + "to clientsOnline + : " + clients.getUserNames());
+                    }
                     List<Message> newMessages = messagesList.entrySet().stream()
                             .filter(message -> message.getKey().compareTo(lastId) > 0)
                             .map(Map.Entry::getValue).collect(Collectors.toList());
@@ -69,6 +78,8 @@ public class ServerThread extends  Thread{
                     Document document = builder.newDocument();
                     java.lang.String xmlContent = MessageBuilder.buildDocument(document, newMessages);
                     out.println(xmlContent);
+                    out.println(END_LINE_MESSAGE);
+                    out.println(clients.toString());
                     out.println(END_LINE_MESSAGE);
                     out.flush();
                     break;
@@ -123,6 +134,8 @@ public class ServerThread extends  Thread{
                 log.debug("Close stream objects");
                 in.close();
                 out.close();
+                //clients.removeName(socket);
+                log.debug("clientsOnline + : " + clients.getUserNames());
                 socket.close();
             } catch (IOException e) {
                 log.error("Socket not closed");

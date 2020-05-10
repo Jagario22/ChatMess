@@ -15,6 +15,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -51,11 +52,11 @@ public class Utility {
                          new InputStreamReader(
                                  socket.getInputStream()
                          )
-                 );)
-            {
+                 );) {
                 Model model = app.getModel();
                 out.println(METHOD_GET);
                 out.println(model.getLastMessageId());
+                out.println(model.getCurrentUser());
                 out.flush();
 
                 String responeLine = in.readLine();
@@ -66,6 +67,13 @@ public class Utility {
                     responeLine = in.readLine();
                 }
 
+                responeLine = in.readLine();
+                String names = "";
+                while (!END_LINE_MESSAGE.equals(responeLine)) {
+                    names = responeLine;
+                    responeLine = in.readLine();
+                }
+                model.setUserOnline(Arrays.asList(names.toString().split(",")));
                 SAXParserFactory parserFactory = SAXParserFactory.newInstance();
                 SAXParser parser = parserFactory.newSAXParser();
 
@@ -81,8 +89,7 @@ public class Utility {
                 MessageParser saxp = new MessageParser(id, messages);
                 parser.parse(new ByteArrayInputStream(mesStr.toString().getBytes()), saxp);
 
-                if (messages.size() > 0)
-                {
+                if (messages.size() > 0) {
                     model.addMessages(messages);
                     model.setLastMessageId(id.longValue());
                     log.trace("List of new messages: " + messages.toString());
