@@ -15,6 +15,8 @@ public class ListOfClients {
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
+        if (userNames.size() == 0)
+            return "";
         for (int i = 0; i < userNames.size() - 1; i++) {
             str.append(userNames.get(i)).append(",");
         }

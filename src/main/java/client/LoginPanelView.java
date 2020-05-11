@@ -15,7 +15,8 @@ public class LoginPanelView extends AbstractView {
     private JButton loginButton;
     private JTextField userNameField;
     private JTextField serverIpAddressField;
-    private JLabel errorLabel;
+    private JLabel errorWrongNameLabel;
+    private JLabel errorExistNameLabel;
 
     //Singleton pattern
     private LoginPanelView() {
@@ -45,7 +46,7 @@ public class LoginPanelView extends AbstractView {
 
     @Override
     public void clearFiels() {
-        getErrorLabel().setVisible(false);
+        getErrorWrongNameLabel().setVisible(false);
         getUserNameField().setText("");
         getServerIpAddressField().setText(parent.getModel().getServerIPAddress());
     }
@@ -105,14 +106,25 @@ public class LoginPanelView extends AbstractView {
         return serverIpAddressField;
     }
 
-    public JLabel getErrorLabel() {
-        if (errorLabel == null)
-            errorLabel = new JLabel("Wrong server ip address or user name");
-            errorLabel.setForeground(Color.red);
-        return errorLabel;
+    public JLabel getErrorWrongNameLabel() {
+        if (errorWrongNameLabel == null)
+            errorWrongNameLabel = new JLabel("Wrong server ip address or user name");
+        errorWrongNameLabel.setForeground(Color.red);
+        return errorWrongNameLabel;
     }
 
-    private void setErrorLabelText(String errorText) {
-        getErrorLabel().setText(errorText);
+    public JLabel getErrorExistNameLabel() {
+        if (errorExistNameLabel == null)
+            errorExistNameLabel = new JLabel("This name already exist");
+        errorExistNameLabel.setForeground(Color.red);
+        return errorExistNameLabel;
+    }
+
+    public void setErrorExistNameLabel(JLabel errorExistNameLabel) {
+        this.errorExistNameLabel = errorExistNameLabel;
+    }
+
+    private void setErrorWrongNameLabelText(String errorText) {
+        getErrorWrongNameLabel().setText(errorText);
     }
 }

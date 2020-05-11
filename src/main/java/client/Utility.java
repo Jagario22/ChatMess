@@ -35,7 +35,47 @@ public class Utility {
             return findParent(comp.getParent(), clazz);
     }
 
+    public static void usersUpdate(ChatMessengerApp app) {
+        InetAddress addr;
+        try {
+            addr = InetAddress.getByName(app.getModel().getServerIPAddress());
+            try (Socket socket = new Socket(addr, ChatMessServer.PORT);
+                 PrintWriter out = new PrintWriter(
+                         new BufferedWriter(
+                                 new OutputStreamWriter(
+                                         socket.getOutputStream()
+                                 )
+                         ), true
+                 );
+                 BufferedReader in = new BufferedReader(
+                         new InputStreamReader(
+                                 socket.getInputStream()
+                         )
+                 );) {
+                Model model = app.getModel();
+                out.println(METHOD_GET);
+                out.println(METHOD_GET_USERS);
+                out.println(model.getCurrentUser());
+                out.flush();
 
+                String responseline = in.readLine();
+                String names = "";
+
+                while (!END_LINE_MESSAGE.equals(responseline)) {
+                    names = responseline;
+                    responseline = in.readLine();
+                }
+                if (names != "")
+                    model.setUserOnline(Arrays.asList(names.toString().split(",")));
+
+            } catch (IOException e) {
+                log.error("Socket error: " + e.getMessage());
+            }
+
+        } catch (UnknownHostException e) {
+            log.error("Unknown host address" + e.getMessage());
+        }
+    }
 
     public static void messagesUpdate(ChatMessengerApp app) {
         InetAddress addr;
@@ -56,6 +96,7 @@ public class Utility {
                  );) {
                 Model model = app.getModel();
                 out.println(METHOD_GET);
+                out.println(METHOD_GET_MESSAGES);
                 out.println(model.getLastMessageId());
                 out.println(model.getCurrentUser());
                 out.flush();
@@ -68,13 +109,6 @@ public class Utility {
                     responeLine = in.readLine();
                 }
 
-                responeLine = in.readLine();
-                String names = "";
-                while (!END_LINE_MESSAGE.equals(responeLine)) {
-                    names = responeLine;
-                    responeLine = in.readLine();
-                }
-                model.setUserOnline(Arrays.asList(names.toString().split(",")));
                 SAXParserFactory parserFactory = SAXParserFactory.newInstance();
                 SAXParser parser = parserFactory.newSAXParser();
 

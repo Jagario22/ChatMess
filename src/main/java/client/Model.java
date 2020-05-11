@@ -5,6 +5,7 @@ import domain.Message;
 import java.util.*;
 
 public class Model {
+
     private ChatMessengerApp parent;
     private String currentUser;
     private String loggedUser;
@@ -16,14 +17,6 @@ public class Model {
 
     private static class ModelHolder {
         private static final Model INSTANCE = new Model();
-    }
-
-    public List<String> getUserOnline() {
-        return userOnline;
-    }
-
-    public void setUserOnline(List<String> userOnline) {
-        this.userOnline = userOnline;
     }
 
     public static Model getInstance() {
@@ -66,6 +59,18 @@ public class Model {
         this.getMessages().addAll(messages);
         parent.getChatPanelView(false)
             .modelChangedNotification(messages.toString());
+    }
+    public List<String> getUserOnline() {
+        return userOnline;
+    }
+
+    public boolean isContainUserName(String name)
+    {
+        return userOnline.contains(name);
+    }
+
+    public void setUserOnline(List<String> userOnline) {
+        this.userOnline = userOnline;
     }
 
 

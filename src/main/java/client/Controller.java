@@ -43,15 +43,31 @@ public class Controller implements ActionListener {
         String commandName = e.getActionCommand();
         switch (commandName) {
             case ACTION_COMMAND_LOGIN: {
+                Model model = parent.getModel();
+
                 LoginPanelView view = Utility.findParent(
                         (Component) e.getSource(), LoginPanelView.class);
+
                 if (! EmailValidator.getInstance().isValid(view.getUserNameField().getText()) ||
                         !InetAddressValidator.getInstance().isValid(view.getServerIpAddressField().getText())) {
-                    command = new LoginErrorCommand(view);
-                } else {
-                    parent.getModel().setCurrentUser(view.getUserNameField().getText());
-                    parent.getModel().setServerIPAddress(view.getServerIpAddressField().getText());
-                    command = new ShowChatViewCommand(parent, view);
+                    command = new LoginErrorCommand(view, "WRONG");
+                }
+                else {
+
+                    model.setCurrentUser(view.getUserNameField().getText());
+                    Utility.usersUpdate(parent);
+
+                    if (!model.isContainUserName(model.getCurrentUser()))
+                    {
+                        model.setServerIPAddress(view.getServerIpAddressField().getText());
+                        command = new ShowChatViewCommand(parent, view);
+                    }
+
+                    else {
+                        model.setCurrentUser("");
+                        command = new LoginErrorCommand(view, "EXIST");
+                    }
+
                 }
             }
             break;

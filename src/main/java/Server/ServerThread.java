@@ -25,6 +25,8 @@ public class ServerThread extends  Thread{
     public static final String METHOD_PUT = "PUT";
     public static final String END_LINE_MESSAGE = "END";
     public static final String METHOD_DELETE = "DELETE";
+    public static final String METHOD_GET_MESSAGES = "MESSAGES";
+    public static final String METHOD_GET_USERS = "USERS";
     private final Socket socket;
     private final AtomicInteger messageid;
     private final ListOfClients clients;
@@ -59,32 +61,44 @@ public class ServerThread extends  Thread{
             String requestLine = in.readLine();
             log.debug(requestLine);
             switch (requestLine) {
-                case METHOD_GET:
-                    log.debug("get");
-                    Long lastId = Long.valueOf(in.readLine());
-                    log.debug(String.valueOf(lastId));
-                    String currentUser = in.readLine();
-                    log.debug(currentUser);
-
-                    if (!clients.ContainsName(currentUser)) {
-                        clients.addName(currentUser);
-                        log.debug("Add name " + currentUser + "to clientsOnline + : " + clients.getUserNames());
+                case METHOD_GET: {
+                    String requestline = in.readLine();
+                    switch (requestline) {
+                        case METHOD_GET_MESSAGES: {
+                            log.debug("get");
+                            Long lastId = Long.valueOf(in.readLine());
+                            log.debug(String.valueOf(lastId));
+                            String currentUser = in.readLine();
+                            log.debug(currentUser);
+                            if (!clients.ContainsName(currentUser)) {
+                                clients.addName(currentUser);
+                            }
+                            log.debug("Add name " + currentUser + "to clientsOnline + : " + clients.getUserNames());
+                            List<Message> newMessages = messagesList.entrySet().stream()
+                                    .filter(message -> message.getKey().compareTo(lastId) > 0)
+                                    .map(Map.Entry::getValue).collect(Collectors.toList());
+                            log.debug(newMessages.toString());
+                            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                            DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
+                            Document document = builder.newDocument();
+                            java.lang.String xmlContent = MessageBuilder.buildDocument(document, newMessages);
+                            out.println(xmlContent);
+                            out.println(END_LINE_MESSAGE);
+                            out.flush();
+                            break;
+                        }
+                        case METHOD_GET_USERS: {
+                            String currentUser = in.readLine();
+                            log.debug(currentUser);
+                            out.println(clients.toString());
+                            log.debug(clients.toString());
+                            out.println(END_LINE_MESSAGE);
+                            out.flush();
+                            break;
+                        }
                     }
-                    List<Message> newMessages = messagesList.entrySet().stream()
-                            .filter(message -> message.getKey().compareTo(lastId) > 0)
-                            .map(Map.Entry::getValue).collect(Collectors.toList());
-                    log.debug(newMessages.toString());
-                    DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-                    DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
-                    Document document = builder.newDocument();
-                    java.lang.String xmlContent = MessageBuilder.buildDocument(document, newMessages);
-                    out.println(xmlContent);
-                    out.println(END_LINE_MESSAGE);
-                    out.println(clients.toString());
-                    out.println(END_LINE_MESSAGE);
-                    out.flush();
                     break;
-
+                }
                 case METHOD_PUT:
                     log.debug("put");
                     requestLine = in.readLine();
@@ -121,9 +135,9 @@ public class ServerThread extends  Thread{
 
                 case METHOD_DELETE:
                     requestLine = in.readLine();
-                    log.debug("Remove name + " + requestLine + " from clients");
+                    log.debug("Remove name " + requestLine + " from clients");
                     clients.removeName(requestLine);
-                    log.debug("clientsOnline + : " + clients.getUserNames());
+                    log.debug("clientsOnline: " + clients.getUserNames());
                     out.println("OK");
                     out.flush();
                     break;
