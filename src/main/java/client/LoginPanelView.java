@@ -17,6 +17,7 @@ public class LoginPanelView extends AbstractView {
     private JLabel errorWrongNameLabel;
     private JLabel errorExistNameLabel;
 
+
     //Singleton pattern
     private LoginPanelView() {
         super();
