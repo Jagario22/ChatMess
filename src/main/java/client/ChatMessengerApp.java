@@ -29,10 +29,12 @@ public class ChatMessengerApp extends JFrame {
         JFrame frame = new ChatMessengerApp();
         frame.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent we){
-                if (!(LoginPanelView.getInstance().isVisible()))
-                    Utility.deleteUser((ChatMessengerApp) frame);
-                else
-                    System.exit(0);
+                ChatMessengerApp app = (ChatMessengerApp) frame;
+                if (!(LoginPanelView.getInstance().isVisible())) {
+                    Utility.deleteUser(app);
+                    app.showLoginPanelView();
+                }
+
             }
         });
         frame.setVisible(true);

@@ -123,6 +123,7 @@ public class ServerThread extends  Thread{
                     requestLine = in.readLine();
                     log.debug("Remove name + " + requestLine + " from clients");
                     clients.removeName(requestLine);
+                    log.debug("clientsOnline + : " + clients.getUserNames());
                     out.println("OK");
                     out.flush();
                     break;
@@ -144,7 +145,6 @@ public class ServerThread extends  Thread{
                 in.close();
                 out.close();
                 //clients.removeName(socket);
-                log.debug("clientsOnline + : " + clients.getUserNames());
                 socket.close();
             } catch (IOException e) {
                 log.error("Socket not closed");
