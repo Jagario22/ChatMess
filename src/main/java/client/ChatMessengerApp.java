@@ -38,6 +38,7 @@ public class ChatMessengerApp extends JFrame {
             }
         });
         frame.setVisible(true);
+        //frame.setResizable(false);
         frame.repaint();
     }
 

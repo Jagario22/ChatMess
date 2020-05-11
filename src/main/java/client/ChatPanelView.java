@@ -1,5 +1,6 @@
 package client;
 
+import com.sun.xml.internal.messaging.saaj.soap.JpegDataContentHandler;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
@@ -23,6 +24,11 @@ public class ChatPanelView extends AbstractView {
     private JButton sendMessageButton;
     private JTextField textMessageField;
     private JButton logoutButton;
+    private JPanel mainPanel;
+    private JPanel messagesPanel;
+    private JPanel usersListPanel;
+    private JList<String> usersJlist;
+
 
     private ChatPanelView() {
         super();
@@ -32,7 +38,33 @@ public class ChatPanelView extends AbstractView {
     public static ChatPanelView getInstance() {
         return ChatPanelViewHolder.INSTANCE;
     }
+    private static class ChatPanelViewHolder {
+        private static final ChatPanelView INSTANCE = new ChatPanelView();
+    }
 
+    @Override
+    public void initialize() {
+        this.setName("chatPanelView");
+        this.setLayout(new BorderLayout());
+        JPanel header = new JPanel(new BorderLayout());
+        header.add(getPromptLabel(), BorderLayout.WEST);
+        header.add(getLogoutButton(), BorderLayout.EAST);
+        this.add(header, BorderLayout.NORTH);
+        //this.add(getMessagesListPanel(), BorderLayout.CENTER);
+        //this.add(getUsersListPanel(), BorderLayout.EAST);
+        this.add(getMainPanel(), BorderLayout.CENTER);
+        this.add(getTextMessagePanel(), BorderLayout.SOUTH);
+        InputMap im = getSendMessageButton().getInputMap();
+        im.put(KeyStroke.getKeyStroke("ENTER"), "pressed");
+        im.put(KeyStroke.getKeyStroke("released ENTER"), "released");
+
+    }
+
+    @Override
+    public void clearFields() {
+        getMessagesTextPane().setText("");
+        getTextMessageField().setText("");
+    }
 
     public void modelChangedNotification(String newMessages) {
         if (newMessages.length() != 0) {
@@ -50,37 +82,13 @@ public class ChatPanelView extends AbstractView {
         }
     }
 
-    private static class ChatPanelViewHolder {
-        private static final ChatPanelView INSTANCE = new ChatPanelView();
-    }
+    //GETTERS
 
     public JLabel getPromptLabel() {
         if (promptLabel == null)
             promptLabel = new JLabel("Hello, " + parent.getModel().getLoggedUser() + "!");
         return promptLabel;
     }
-
-    @Override
-    public void initialize() {
-        this.setName("chatPanelView");
-        this.setLayout(new BorderLayout());
-        JPanel header = new JPanel(new BorderLayout());
-        header.add(getPromptLabel(), BorderLayout.WEST);
-        header.add(getLogoutButton(), BorderLayout.EAST);
-        this.add(header, BorderLayout.NORTH);
-        this.add(getMessagesListPanel(), BorderLayout.CENTER);
-        this.add(getTextMessagePanel(), BorderLayout.SOUTH);
-        InputMap im = getSendMessageButton().getInputMap();
-        im.put(KeyStroke.getKeyStroke("ENTER"), "pressed");
-        im.put(KeyStroke.getKeyStroke("released ENTER"), "released");
-    }
-
-    @Override
-    public void clearFiels() {
-        getMessagesTextPane().setText("");
-        getTextMessageField().setText("");
-    }
-
 
     public void initModel(boolean getMessages) {
         parent.getModel().setLastMessageText("");
@@ -95,12 +103,75 @@ public class ChatPanelView extends AbstractView {
     public JScrollPane getMessagesListPanel() {
         if (messagesListPanel == null) {
             messagesListPanel = new JScrollPane(getMessagesTextPane());
-            messagesListPanel.setSize(getMaximumSize());
             messagesListPanel
                     .setVerticalScrollBarPolicy(
                             ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         }
         return messagesListPanel;
+    }
+
+    public JPanel getMessagesPanel() {
+        if (messagesPanel == null)
+        {
+            messagesPanel = new JPanel();
+            messagesPanel.setLayout(new BorderLayout());
+            messagesPanel.add(getMessagesListPanel());
+        }
+        return messagesPanel;
+    }
+
+    public JPanel getMainPanel() {
+        if (mainPanel == null)
+        {
+            JPanel space = new JPanel();
+            space.setLayout(new BorderLayout());
+            mainPanel = new JPanel();
+            mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
+            mainPanel.add(getMessagesPanel());
+            mainPanel.add(getUsersListPanel());
+        }
+        return mainPanel;
+    }
+
+    public JPanel getUsersListPanel() {
+        if (usersListPanel == null) {
+
+            usersListPanel = new JPanel();
+            Font  f1  = new Font(Font.SERIF, Font.PLAIN,  30);
+            Label l = new Label("Online Users");
+            l.setFont(f1);
+
+            JPanel userPanel = new JPanel();
+            userPanel.setLayout(new BoxLayout(userPanel, BoxLayout.Y_AXIS));
+
+
+            JPanel JListPanel = new JPanel();
+            JListPanel.setLayout(new BorderLayout());
+            JListPanel.add(getUsersJlist(), BorderLayout.CENTER);
+
+
+            userPanel.add(l);
+            userPanel.add(JListPanel);
+
+            usersListPanel.setLayout(new BorderLayout());
+            usersListPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+            usersListPanel.add(userPanel, BorderLayout.CENTER);
+        }
+        return usersListPanel;
+    }
+
+    public JList<String> getUsersJlist() {
+        if (usersJlist == null)
+        {
+            String[] names = {"He", "She", "It"};
+            usersJlist = new JList<>(names);
+            usersJlist.setPreferredSize(new Dimension(50, getHeight()));
+            Font  f1  = new Font(Font.SERIF, Font.PLAIN,  30);
+            usersJlist.setFont(f1);
+            DefaultListCellRenderer renderer = (DefaultListCellRenderer) usersJlist.getCellRenderer();
+            renderer.setHorizontalAlignment(SwingConstants.CENTER);
+        }
+        return usersJlist;
     }
 
     public JTextPane getMessagesTextPane() {
