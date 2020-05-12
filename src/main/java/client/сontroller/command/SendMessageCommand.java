@@ -1,6 +1,8 @@
-package client;
+package client.сontroller.command;
 import Server.ChatMessServer;
 import Server.ServerThread;
+import client.ChatMessengerApp;
+import client.view.ChatPanelView;
 import domain.Message;
 import domain.xml.MessageBuilder;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +14,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;

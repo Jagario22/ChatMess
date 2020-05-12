@@ -1,5 +1,11 @@
-package client;
+package client.сontroller;
 
+import client.*;
+import client.model.Model;
+import client.util.Utility;
+import client.view.ChatPanelView;
+import client.view.LoginPanelView;
+import client.сontroller.command.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.commons.validator.routines.InetAddressValidator;
@@ -9,9 +15,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 
-import static client.ChatPanelView.LOGOUT_ACTION_COMMAND;
-import static client.LoginPanelView.ACTION_COMMAND_LOGIN;
-import static client.ChatPanelView.SEND_ACTION_COMMAND;
+import static client.view.ChatPanelView.LOGOUT_ACTION_COMMAND;
+import static client.view.LoginPanelView.ACTION_COMMAND_LOGIN;
+import static client.view.ChatPanelView.SEND_ACTION_COMMAND;
 
 @Slf4j
 public class Controller implements ActionListener {

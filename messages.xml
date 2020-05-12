@@ -4,5 +4,6 @@
     <message id="2" moment="20:14:00 08-04-2020" receiver="Me" sender="you">Example message</message>
     <message id="3" moment="16:10:48 08-05-2020" receiver="" sender="s@i.ua">no</message>
     <message id="4" moment="14:09:11 11-05-2020" receiver="" sender="me@i.ua">hello</message>
+    <message id="5" moment="19:43:16 11-05-2020" receiver="" sender="me@i.ua">HELLO</message>
 </messages>
 

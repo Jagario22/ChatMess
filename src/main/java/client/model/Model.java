@@ -1,7 +1,9 @@
-package client;
+package client.model;
 
+import client.ChatMessengerApp;
 import domain.Message;
 
+import javax.swing.*;
 import java.util.*;
 
 public class Model {
@@ -12,19 +14,24 @@ public class Model {
     private String lastMessageText;
     private long lastMessageId;
     private Set<Message> messages;
-    private List<String> userOnline = new ArrayList<String>();
     private String serverIPAddress = "127.0.0.1";
+    private final DefaultListModel<String> userNamesList = new DefaultListModel<String>();
+
+    public boolean isContainUserName(String currentUser) {
+        return userNamesList.contains(currentUser);
+    }
 
     private static class ModelHolder {
         private static final Model INSTANCE = new Model();
     }
+
 
     public static Model getInstance() {
         return ModelHolder.INSTANCE;
     }
 
     public void initialize() {
-        setMessages(new TreeSet<Message>(){
+        setMessages(new TreeSet<Message>() {
             @Override
             public String toString() {
                 StringBuilder result = new StringBuilder("<html><body id ='body'>");
@@ -41,7 +48,8 @@ public class Model {
         lastMessageText = "";
     }
 
-    private Model(){  }
+    private Model() {
+    }
 
     public String messagesToString() {
         return messages.toString();
@@ -58,52 +66,84 @@ public class Model {
     public void addMessages(List<Message> messages) {
         this.getMessages().addAll(messages);
         parent.getChatPanelView(false)
-            .modelChangedNotification(messages.toString());
+                .modelChangedNotificationMessages(messages.toString());
     }
-    public List<String> getUserOnline() {
-        return userOnline;
+    public void addUsers(List<String> users) {
+        boolean added = false;
+        boolean deleted = false;
+
+        //add
+        for (String i : users)
+        {
+            if (!userNamesList.contains(i) && !i.equals(currentUser)) {
+                userNamesList.addElement(i);
+                if (!added) added = true;
+            }
+        }
+        //delete
+        for (int i = 0; i < userNamesList.size(); i++)
+        {
+            if (!users.contains(userNamesList.get(i)))
+            {
+                userNamesList.remove(i);
+                if (!deleted) deleted = true;
+            }
+        }
+        if (deleted || added)
+        {
+            parent.getChatPanelView(false).updateUsersLabel();
+        }
     }
 
-    public boolean isContainUserName(String name)
-    {
-        return userOnline.contains(name);
+    public String getCurrentUser() {
+        return currentUser;
     }
 
-    public void setUserOnline(List<String> userOnline) {
-        this.userOnline = userOnline;
+    public String getLoggedUser() {
+        return loggedUser;
     }
 
+    public String getLastMessageText() {
+        return lastMessageText;
+    }
+
+    public String getServerIPAddress() {
+        return serverIPAddress;
+    }
 
     public ChatMessengerApp getParent() {
         return parent;
     }
-    public void setParent(ChatMessengerApp parent) {
-        this.parent = parent;
-    }
-    public String getCurrentUser() {
-        return currentUser;
-    }
-    public void setCurrentUser(String currentUser) {
-        this.currentUser = currentUser;
-    }
-    public String getLoggedUser() {
-        return loggedUser;
-    }
-    public void setLoggedUser(String loggedUser) {
-        this.loggedUser = loggedUser;
-    }
-    public String getLastMessageText() {
-        return lastMessageText;
-    }
-    public void setLastMessageText(String lastMessageText) {
-        this.lastMessageText = lastMessageText;
-    }
+
     public Set<Message> getMessages() {
         return messages;
     }
+
+    public DefaultListModel<String> getUserNamesList() {
+        return userNamesList;
+    }
+
+    public void setParent(ChatMessengerApp parent) {
+        this.parent = parent;
+    }
+
+    public void setCurrentUser(String currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public void setLoggedUser(String loggedUser) {
+        this.loggedUser = loggedUser;
+    }
+
+    public void setLastMessageText(String lastMessageText) {
+        this.lastMessageText = lastMessageText;
+    }
+
     public void setMessages(Set<Message> messages) {
         this.messages = messages;
     }
-    public String getServerIPAddress() { return serverIPAddress; }
-    public void setServerIPAddress(String serverIPAddress) { this.serverIPAddress = serverIPAddress;}
+
+    public void setServerIPAddress(String serverIPAddress) {
+        this.serverIPAddress = serverIPAddress;
+    }
 }

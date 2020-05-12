@@ -1,5 +1,6 @@
-package client;
+package client.view;
 
+import client.view.AbstractView;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
@@ -10,13 +11,13 @@ import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLDocument;
 import java.awt.*;
 import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 public class ChatPanelView extends AbstractView {
     public static final String SEND_ACTION_COMMAND = "send";
     public static final String LOGOUT_ACTION_COMMAND = "logout";
 
-    private JPanel messageRightPanel;
     private JPanel messagesMainPanel; //главная панель
     private JPanel usersListPanel;
     private JPanel textMessagePanel; //панель нижняя
@@ -56,11 +57,14 @@ public class ChatPanelView extends AbstractView {
         JPanel header = new JPanel(new BorderLayout());
         header.add(getPromptLabel(), BorderLayout.WEST);
         header.add(getLogoutButton(), BorderLayout.EAST);
+
+        this.add(header, BorderLayout.NORTH);
         this.add(getMessagesMainPanel(), BorderLayout.CENTER);
+        this.add(getTextMessagePanel(), BorderLayout.SOUTH);
+
         InputMap im = getSendMessageButton().getInputMap();
         im.put(KeyStroke.getKeyStroke("ENTER"), "pressed");
         im.put(KeyStroke.getKeyStroke("released ENTER"), "released");
-
     }
 
     public void initModel(boolean getMessages) {
@@ -69,8 +73,10 @@ public class ChatPanelView extends AbstractView {
             getMessagesTextPane().setText(parent.getModel().messagesToString());
         }
         getPromptLabel().setText("Hello, " + parent.getModel().getLoggedUser() + "!");
+        updateUsersLabel();
         getTextMessageField().requestFocusInWindow();
         parent.getRootPane().setDefaultButton(getSendMessageButton());
+
     }
 
     @Override
@@ -79,7 +85,7 @@ public class ChatPanelView extends AbstractView {
         getTextMessageField().setText("");
     }
 
-    public void modelChangedNotification(String newMessages) {
+    public void modelChangedNotificationMessages(String newMessages) {
         if (newMessages.length() != 0) {
             log.trace("New messages arrived: " + newMessages);
             HTMLDocument document = (HTMLDocument) getMessagesTextPane().getStyledDocument();
@@ -97,51 +103,43 @@ public class ChatPanelView extends AbstractView {
 
     //GETTERS
 
-    public JPanel getMessageRightPanel() {
-        if (messageRightPanel == null) {
-            messageRightPanel = new JPanel();
-            messageRightPanel.setLayout(new BorderLayout());
-            JPanel right = new JPanel();
-            right.setLayout(new BorderLayout());
-
-            JPanel header = new JPanel();
-            header.setLayout(new BorderLayout());
-            header.add(getPromptLabel(), BorderLayout.WEST);
-            header.add(getLogoutButton(), BorderLayout.EAST);
-            right.add(header, BorderLayout.NORTH);
-            right.add(getMessagesPanel(), BorderLayout.CENTER);
-            right.add(getTextMessagePanel(), BorderLayout.SOUTH);
-            messageRightPanel.add(right);
-        }
-        return messageRightPanel;
-    }
-
     public JPanel getMessagesMainPanel() {
         if (messagesMainPanel == null) {
             messagesMainPanel = new JPanel();
-            messagesMainPanel.setLayout(new BoxLayout(messagesMainPanel, BoxLayout.X_AXIS));
-            messagesMainPanel.add(getMessageRightPanel());
-            messagesMainPanel.add(getUsersListPanel());
+            messagesMainPanel.setLayout(new BorderLayout());
+            messagesMainPanel.add(getMessagesPanel(), BorderLayout.WEST);
+            messagesMainPanel.add(getUsersListPanel(), BorderLayout.EAST);
+            messagesMainPanel.add(getMessagesListPanel());
         }
         return messagesMainPanel;
+    }
+
+    public JPanel getMessagesPanel() {
+        if (messagesPanel == null) {
+            messagesPanel = new JPanel();
+            messagesPanel.setLayout(new BorderLayout());
+            messagesPanel.setFont(new Font(Font.SERIF, Font.PLAIN, 14));
+
+        }
+        return messagesPanel;
     }
 
     public JPanel getUsersListPanel() {
         if (usersListPanel == null) {
 
             usersListPanel = new JPanel();
-            Font f1 = new Font(Font.SERIF, Font.PLAIN, 30);
-            JLabel l = getUsersLabel();
-            l.setFont(f1);
 
-            JPanel userPanel = new JPanel();
-            userPanel.setLayout(new BoxLayout(userPanel, BoxLayout.Y_AXIS));
+            JLabel l = getUsersLabel();
+            l.setFont(new Font(Font.SERIF, Font.PLAIN, 14));
 
 
             JPanel JListPanel = new JPanel();
             JListPanel.setLayout(new BorderLayout());
             JListPanel.add(getUsersJlist(), BorderLayout.CENTER);
 
+
+            JPanel userPanel = new JPanel();
+            userPanel.setLayout(new BoxLayout(userPanel, BoxLayout.Y_AXIS));
 
             userPanel.add(l);
             userPanel.add(JListPanel);
@@ -151,15 +149,6 @@ public class ChatPanelView extends AbstractView {
             usersListPanel.add(userPanel, BorderLayout.CENTER);
         }
         return usersListPanel;
-    }
-
-    public JPanel getMessagesPanel() {
-        if (messagesPanel == null) {
-            messagesPanel = new JPanel();
-            messagesPanel.setLayout(new BorderLayout());
-            messagesPanel.add(getMessagesListPanel());
-        }
-        return messagesPanel;
     }
 
     public JPanel getTextMessagePanel() {
@@ -174,7 +163,7 @@ public class ChatPanelView extends AbstractView {
 
     public JLabel getUsersLabel() {
         if (usersLabel == null) {
-            usersLabel = new JLabel("UsersOnline: " + parent.getModel().getUserOnline().size());
+            usersLabel = new JLabel();
             usersLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         }
@@ -245,14 +234,17 @@ public class ChatPanelView extends AbstractView {
 
     public JList<String> getUsersJlist() {
         if (usersJlist == null) {
-            String[] names = {"He", "She", "It"};
-            usersJlist = new JList<>(names);
-            usersJlist.setPreferredSize(new Dimension(50, getHeight()));
-            Font f1 = new Font(Font.SERIF, Font.PLAIN, 30);
-            usersJlist.setFont(f1);
+            usersJlist = new JList<String>(parent.getModel().getUserNamesList());
+            usersJlist.setPreferredSize(new Dimension((int)(getWidth()*0.2), getHeight()));
+            usersJlist.setFont(new Font(Font.SERIF, Font.PLAIN, 14));
             DefaultListCellRenderer renderer = (DefaultListCellRenderer) usersJlist.getCellRenderer();
             renderer.setHorizontalAlignment(SwingConstants.CENTER);
         }
         return usersJlist;
+    }
+
+    //SETTERS
+    public void updateUsersLabel() {
+        getUsersLabel().setText("usersOnline: " + parent.getModel().getUserNamesList().size());
     }
 }

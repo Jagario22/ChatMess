@@ -1,6 +1,8 @@
-package client;
+package client.сontroller.command;
 
 
+import client.view.LoginPanelView;
+import client.сontroller.command.Command;
 
 public class  LoginErrorCommand implements Command {
     public static final String WRONG_NAME_ERROR = "WRONG";

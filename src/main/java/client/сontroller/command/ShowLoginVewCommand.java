@@ -1,4 +1,7 @@
-package client;
+package client.сontroller.command;
+
+import client.ChatMessengerApp;
+import client.view.ChatPanelView;
 
 public class ShowLoginVewCommand implements Command {
     private ChatMessengerApp app;

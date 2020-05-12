@@ -1,6 +1,8 @@
-package client;
+package client.util;
 
 import Server.ChatMessServer;
+import client.ChatMessengerApp;
+import client.model.Model;
 import domain.Message;
 import domain.xml.MessageParser;
 import lombok.extern.slf4j.Slf4j;
@@ -65,8 +67,9 @@ public class Utility {
                     names = responseline;
                     responseline = in.readLine();
                 }
-                if (names != "")
-                    model.setUserOnline(Arrays.asList(names.toString().split(",")));
+                if (names != "") {
+                    model.addUsers(Arrays.asList(names.toString().split(",")));
+                }
 
             } catch (IOException e) {
                 log.error("Socket error: " + e.getMessage());

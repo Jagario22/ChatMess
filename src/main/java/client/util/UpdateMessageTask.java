@@ -1,4 +1,7 @@
-package client;
+package client.util;
+
+import client.ChatMessengerApp;
+import client.util.Utility;
 
 import java.util.TimerTask;
 

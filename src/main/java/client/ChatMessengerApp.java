@@ -2,6 +2,13 @@ package client;
 
 
 
+import client.model.Model;
+import client.util.Utility;
+import client.view.AbstractView;
+import client.view.ChatPanelView;
+import client.view.LoginPanelView;
+import client.view.ViewFactory;
+import client.сontroller.Controller;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -84,7 +91,7 @@ public class ChatMessengerApp extends JFrame {
         return loginPanelView;
     }
 
-    ChatPanelView getChatPanelView(boolean doGetMessages) {
+    public ChatPanelView getChatPanelView(boolean doGetMessages) {
         ChatPanelView chatPanelView = VIEWS.getview("chat");
         chatPanelView.initModel(doGetMessages);
         return chatPanelView;
