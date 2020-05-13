@@ -67,7 +67,9 @@ public class Model {
         this.getMessages().addAll(messages);
         parent.getChatPanelView(false)
                 .modelChangedNotificationMessages(messages.toString());
+
     }
+
     public void addUsers(List<String> users) {
         boolean added = false;
         boolean deleted = false;
@@ -75,6 +77,9 @@ public class Model {
         //add
         for (String i : users)
         {
+            if (i.equals(currentUser))
+            {
+            }
             if (!userNamesList.contains(i) && !i.equals(currentUser)) {
                 userNamesList.addElement(i);
                 if (!added) added = true;
@@ -94,6 +99,8 @@ public class Model {
             parent.getChatPanelView(false).updateUsersLabel();
         }
     }
+
+    //GETTERS
 
     public String getCurrentUser() {
         return currentUser;
@@ -123,6 +130,8 @@ public class Model {
         return userNamesList;
     }
 
+
+    //SETTERS
     public void setParent(ChatMessengerApp parent) {
         this.parent = parent;
     }

@@ -166,7 +166,7 @@ public class Utility {
                 do {
                     Model model = app.getModel();
                     out.println(METHOD_DELETE);
-                    out.println(model.getLoggedUser());
+                    out.println(model.getCurrentUser());
                     out.flush();
                     result = in.readLine();
                 } while (!"OK".equals(result));

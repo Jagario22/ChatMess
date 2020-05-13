@@ -59,11 +59,10 @@ public class Controller implements ActionListener {
                     command = new LoginErrorCommand(view, "WRONG");
                 }
                 else {
-
-                    model.setCurrentUser(view.getUserNameField().getText());
                     Utility.usersUpdate(parent);
-
-                    if (!model.isContainUserName(model.getCurrentUser()))
+                    String userName = view.getUserNameField().getText();
+                    model.setCurrentUser(userName);
+                    if (!model.isContainUserName(userName))
                     {
                         model.setServerIPAddress(view.getServerIpAddressField().getText());
                         command = new ShowChatViewCommand(parent, view);
