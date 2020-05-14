@@ -10,6 +10,8 @@ import javax.swing.text.Element;
 import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLDocument;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.List;
 
@@ -239,6 +241,14 @@ public class ChatPanelView extends AbstractView {
             usersJlist.setFont(new Font(Font.SERIF, Font.PLAIN, 14));
             DefaultListCellRenderer renderer = (DefaultListCellRenderer) usersJlist.getCellRenderer();
             renderer.setHorizontalAlignment(SwingConstants.CENTER);
+            usersJlist.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                    if ( e.getClickCount() == 1 ) {
+                        getTextMessageField().setText("");
+                        parent.getModel().setReceiver(usersJlist.getSelectedValue());
+                    }
+                }
+            });
         }
         return usersJlist;
     }

@@ -69,12 +69,18 @@ public class ServerThread extends  Thread{
                             Long lastId = Long.valueOf(in.readLine());
                             log.debug(String.valueOf(lastId));
                             String currentUser = in.readLine();
-                            log.debug(currentUser);
+                            log.debug("currentUser: " + currentUser);
+                            String receiver = in.readLine();
+                            log.debug("receiver: " + receiver);
                             if (!clients.ContainsName(currentUser)) {
                                 clients.addName(currentUser);
                             }
                             log.debug("Add name " + currentUser + "to clientsOnline + : " + clients.getUserNames());
                             List<Message> newMessages = messagesList.entrySet().stream()
+                                    .filter(message -> (message.getValue().getUserNF().equals(currentUser)
+                                    && message.getValue().getUserNT().equals(receiver))
+                                    || (message.getValue().getUserNF().equals(receiver)
+                                    && message.getValue().getUserNT().equals(currentUser)))
                                     .filter(message -> message.getKey().compareTo(lastId) > 0)
                                     .map(Map.Entry::getValue).collect(Collectors.toList());
                             log.debug(newMessages.toString());
@@ -89,9 +95,7 @@ public class ServerThread extends  Thread{
                         }
                         case METHOD_GET_USERS: {
                             String currentUser = in.readLine();
-                            log.debug(currentUser);
                             out.println(clients.toString());
-                            log.debug(clients.toString());
                             out.println(END_LINE_MESSAGE);
                             out.flush();
                             break;

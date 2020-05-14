@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <messages>
-    <message id="1" moment="13:14:00 07-04-2020" receiver="You" sender="Me">Example message</message>
-    <message id="2" moment="20:14:00 08-04-2020" receiver="Me" sender="you">Example message</message>
-    <message id="3" moment="16:10:48 08-05-2020" receiver="" sender="s@i.ua">no</message>
-    <message id="4" moment="14:09:11 11-05-2020" receiver="" sender="me@i.ua">hello</message>
-    <message id="5" moment="19:43:16 11-05-2020" receiver="" sender="me@i.ua">HELLO</message>
+    <message id="1" moment="13:14:00 07-04-2020" receiver="you@i.ua" sender="me@i.ua">hello bro</message>
+    <message id="2" moment="20:20:00 08-04-2020" receiver="she@i.ua" sender="me@i.ua">kek</message>
+    <message id="3" moment="17:03:15 14-05-2020" receiver="me@i.ua" sender="you@i.ua">hello</message>
+    <message id="4" moment="17:03:33 14-05-2020" receiver="you@i.ua" sender="me@i.ua">how are you?</message>
+    <message id="5" moment="17:04:00 14-05-2020" receiver="me@i.ua" sender="you@i.ua">i'm okay, thank you</message>
 </messages>
 

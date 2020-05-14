@@ -5,6 +5,7 @@ import domain.Message;
 
 import javax.swing.*;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Model {
 
@@ -16,6 +17,8 @@ public class Model {
     private Set<Message> messages;
     private String serverIPAddress = "127.0.0.1";
     private final DefaultListModel<String> userNamesList = new DefaultListModel<String>();
+    private String receiver;
+    private HashMap<String, Long> lastMessageIds = new HashMap<>();
 
     public boolean isContainUserName(String currentUser) {
         return userNamesList.contains(currentUser);
@@ -46,6 +49,8 @@ public class Model {
         currentUser = "";
         loggedUser = "";
         lastMessageText = "";
+        receiver = "";
+        lastMessageIds.put("", 0L);
     }
 
     private Model() {
@@ -53,14 +58,6 @@ public class Model {
 
     public String messagesToString() {
         return messages.toString();
-    }
-
-    public long getLastMessageId() {
-        return lastMessageId;
-    }
-
-    public void setLastMessageId(long lastMessageId) {
-        this.lastMessageId = lastMessageId;
     }
 
     public void addMessages(List<Message> messages) {
@@ -82,15 +79,18 @@ public class Model {
             }
             if (!userNamesList.contains(i) && !i.equals(currentUser)) {
                 userNamesList.addElement(i);
+                lastMessageIds.put(i, (long) 0);
                 if (!added) added = true;
             }
         }
+
         //delete
         for (int i = 0; i < userNamesList.size(); i++)
         {
-            if (!users.contains(userNamesList.get(i)))
+            if (!users.contains(userNamesList.get(i)) && !userNamesList.get(i).equals(""))
             {
                 userNamesList.remove(i);
+                lastMessageIds.remove(userNamesList.get(i));
                 if (!deleted) deleted = true;
             }
         }
@@ -118,6 +118,10 @@ public class Model {
         return serverIPAddress;
     }
 
+    public String getReceiver() {
+        return receiver;
+    }
+
     public ChatMessengerApp getParent() {
         return parent;
     }
@@ -130,10 +134,25 @@ public class Model {
         return userNamesList;
     }
 
+    public Long getLastMessageIds() {
+        return lastMessageIds.get(receiver);
+    }
 
+    public long getLastMessageId() {
+        return lastMessageId;
+    }
+
+    public void setLastMessageId(long lastMessageId) {
+        this.lastMessageId = lastMessageId;
+    }
     //SETTERS
+
     public void setParent(ChatMessengerApp parent) {
         this.parent = parent;
+    }
+
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
     }
 
     public void setCurrentUser(String currentUser) {
@@ -154,5 +173,9 @@ public class Model {
 
     public void setServerIPAddress(String serverIPAddress) {
         this.serverIPAddress = serverIPAddress;
+    }
+
+    public void setLastMessageIds(Long id) {
+        this.lastMessageIds.put(receiver, id);
     }
 }

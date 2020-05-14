@@ -58,7 +58,7 @@ public class SendMessageCommand implements Command {
                 message.add(Message.newMessage()
                         .text(panel.getTextMessageField().getText())
                         .from(app.getModel().getLoggedUser())
-                        .to("") // TODO
+                        .to(app.getModel().getReceiver())
                         .moment(Calendar.getInstance())
                         .build());
 

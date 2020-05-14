@@ -100,8 +100,10 @@ public class Utility {
                 Model model = app.getModel();
                 out.println(METHOD_GET);
                 out.println(METHOD_GET_MESSAGES);
-                out.println(model.getLastMessageId());
+                out.println(model.getLastMessageIds());
+                //out.println(model.getLastMessageId());
                 out.println(model.getCurrentUser());
+                out.println(model.getReceiver());
                 out.flush();
 
                 String responeLine = in.readLine();
@@ -129,7 +131,8 @@ public class Utility {
 
                 if (messages.size() > 0) {
                     model.addMessages(messages);
-                    model.setLastMessageId(id.longValue());
+                    model.setLastMessageIds(id.longValue());
+                    //model.setLastMessageId(id.longValue());
                     log.trace("List of new messages: " + messages.toString());
                 }
 
