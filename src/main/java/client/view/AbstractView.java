@@ -1,6 +1,6 @@
 package client.view;
 
-import client.ChatMessengerApp;
+import client.main.ChatMessengerApp;
 
 import javax.swing.*;
 import java.awt.*;

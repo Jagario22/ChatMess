@@ -1,11 +1,10 @@
 package client.model;
 
-import client.ChatMessengerApp;
+import client.main.ChatMessengerApp;
 import domain.Message;
 
 import javax.swing.*;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Model {
 
@@ -50,7 +49,6 @@ public class Model {
         loggedUser = "";
         lastMessageText = "";
         receiver = "General chat";
-        userNamesList.addElement("General chat");
     }
 
     private Model() {

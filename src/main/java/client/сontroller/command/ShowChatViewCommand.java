@@ -1,6 +1,6 @@
 package client.сontroller.command;
 
-import client.ChatMessengerApp;
+import client.main.ChatMessengerApp;
 import client.util.UpdateUserTask;
 import client.view.LoginPanelView;
 import client.util.UpdateMessageTask;

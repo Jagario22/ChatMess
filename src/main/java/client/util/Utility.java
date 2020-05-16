@@ -1,7 +1,7 @@
 package client.util;
 
 import Server.ChatMessServer;
-import client.ChatMessengerApp;
+import client.main.ChatMessengerApp;
 import client.model.Model;
 import domain.Message;
 import domain.xml.MessageParser;
@@ -37,7 +37,7 @@ public class Utility {
             return findParent(comp.getParent(), clazz);
     }
 
-    public static void usersUpdate(ChatMessengerApp app) {
+    public static boolean usersUpdate(ChatMessengerApp app) {
         InetAddress addr;
         try {
             addr = InetAddress.getByName(app.getModel().getServerIPAddress());
@@ -70,17 +70,19 @@ public class Utility {
                 if (names != "") {
                     model.addUsers(Arrays.asList(names.toString().split(",")));
                 }
-
+                return true;
             } catch (IOException e) {
                 log.error("Socket error: " + e.getMessage());
+                return false;
             }
 
         } catch (UnknownHostException e) {
             log.error("Unknown host address" + e.getMessage());
+            return false;
         }
     }
 
-    public static void messagesUpdate(ChatMessengerApp app) {
+    public static boolean messagesUpdate(ChatMessengerApp app) {
         InetAddress addr;
         try {
             addr = InetAddress.getByName(app.getModel().getServerIPAddress());
@@ -133,20 +135,24 @@ public class Utility {
                     model.setLastMessageId(id.longValue());
                     log.trace("List of new messages: " + messages.toString());
                 }
+                return true;
 
             } catch (IOException e) {
                 log.error("Socket error: " + e.getMessage());
+                return false;
             } catch (SAXException | ParserConfigurationException e) {
                 e.printStackTrace();
                 log.error("Parse exception: " + e.getMessage());
+                return false;
             }
 
         } catch (UnknownHostException e) {
             log.error("Unknown host address" + e.getMessage());
+            return false;
         }
     }
 
-    public static void deleteUser(ChatMessengerApp app) {
+    public static boolean deleteUser(ChatMessengerApp app) {
         InetAddress addr;
         String result;
         try {
@@ -172,11 +178,14 @@ public class Utility {
                     result = in.readLine();
                 } while (!"OK".equals(result));
 
+                return true;
             } catch (IOException e) {
                 log.error("Socket error: " + e.getMessage());
+                return false;
             }
         } catch (UnknownHostException e) {
             log.error("Unknown host address" + e.getMessage());
+            return false;
         }
     }
 }

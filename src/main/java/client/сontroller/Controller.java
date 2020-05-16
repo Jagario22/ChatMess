@@ -1,6 +1,6 @@
 package client.сontroller;
 
-import client.*;
+import client.main.ChatMessengerApp;
 import client.model.Model;
 import client.util.Utility;
 import client.view.ChatPanelView;
@@ -18,6 +18,7 @@ import java.text.ParseException;
 import static client.view.ChatPanelView.LOGOUT_ACTION_COMMAND;
 import static client.view.LoginPanelView.ACTION_COMMAND_LOGIN;
 import static client.view.ChatPanelView.SEND_ACTION_COMMAND;
+import static client.сontroller.command.LoginErrorCommand.*;
 
 @Slf4j
 public class Controller implements ActionListener {
@@ -56,23 +57,26 @@ public class Controller implements ActionListener {
 
                 if (! EmailValidator.getInstance().isValid(view.getUserNameField().getText()) ||
                         !InetAddressValidator.getInstance().isValid(view.getServerIpAddressField().getText())) {
-                    command = new LoginErrorCommand(view, "WRONG");
+                    command = new LoginErrorCommand(view, WRONG_NAME_ERROR);
+                    return;
                 }
-                else {
-                    Utility.usersUpdate(parent);
-                    String userName = view.getUserNameField().getText();
-                    model.setCurrentUser(userName);
-                    if (!model.isContainUserName(userName))
-                    {
-                        model.setServerIPAddress(view.getServerIpAddressField().getText());
-                        command = new ShowChatViewCommand(parent, view);
-                    }
 
-                    else {
-                        model.setCurrentUser("");
-                        command = new LoginErrorCommand(view, "EXIST");
-                    }
+                if (!Utility.usersUpdate(parent)) {
+                    command = new LoginErrorCommand(view, SERVER_ERROR);
+                    return;
+                }
 
+                String userName = view.getUserNameField().getText();
+                model.setCurrentUser(userName);
+
+
+                if (!model.isContainUserName(userName))
+                {
+                    model.setServerIPAddress(view.getServerIpAddressField().getText());
+                    command = new ShowChatViewCommand(parent, view);
+                } else {
+                    model.setCurrentUser("");
+                    command = new LoginErrorCommand(view, NAME_EXIST);
                 }
             }
             break;

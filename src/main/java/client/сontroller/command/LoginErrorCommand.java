@@ -2,11 +2,13 @@ package client.сontroller.command;
 
 
 import client.view.LoginPanelView;
-import client.сontroller.command.Command;
+
+import javax.swing.*;
 
 public class  LoginErrorCommand implements Command {
     public static final String WRONG_NAME_ERROR = "WRONG";
     public static final String NAME_EXIST = "EXIST";
+    public static final String SERVER_ERROR = "SOCKET ERROR";
     private String error;
     private LoginPanelView view;
     public LoginErrorCommand(LoginPanelView view, String error) {
@@ -17,18 +19,30 @@ public class  LoginErrorCommand implements Command {
     @Override
     public void execute() {
         view.setVisible(false);
+        JLabel errorLabel = view.getErrorNameLabel();
+
         switch (error)
         {
             case WRONG_NAME_ERROR:
-                view.getMainPanel().add(view.getErrorWrongNameLabel());
-                view.getErrorWrongNameLabel().setVisible(true);
+                errorLabel.setText("Wrong server ip address or user name");
+                view.getMainPanel().add(errorLabel);
+                view.getErrorNameLabel().setVisible(true);
                 view.setVisible(true);
                 view.repaint();
                 break;
 
             case NAME_EXIST:
-                view.getMainPanel().add(view.getErrorExistNameLabel());
-                view.getErrorExistNameLabel().setVisible(true);
+                errorLabel.setText("This name already exist");
+                view.getMainPanel().add(errorLabel);
+                view.getErrorNameLabel().setVisible(true);
+                view.setVisible(true);
+                view.repaint();
+                break;
+
+            case SERVER_ERROR:
+                errorLabel.setText("Server is not responding");
+                view.getMainPanel().add(errorLabel);
+                view.getErrorNameLabel().setVisible(true);
                 view.setVisible(true);
                 view.repaint();
                 break;

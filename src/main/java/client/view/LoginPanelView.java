@@ -46,7 +46,7 @@ public class LoginPanelView extends AbstractView {
 
     @Override
     public void clearFields() {
-        getErrorWrongNameLabel().setVisible(false);
+        getErrorNameLabel().setVisible(false);
         getUserNameField().setText("");
         getServerIpAddressField().setText(parent.getModel().getServerIPAddress());
     }
@@ -106,18 +106,11 @@ public class LoginPanelView extends AbstractView {
         return serverIpAddressField;
     }
 
-    public JLabel getErrorWrongNameLabel() {
+    public JLabel getErrorNameLabel() {
         if (errorWrongNameLabel == null)
-            errorWrongNameLabel = new JLabel("Wrong server ip address or user name");
+            errorWrongNameLabel = new JLabel();
         errorWrongNameLabel.setForeground(Color.red);
         return errorWrongNameLabel;
-    }
-
-    public JLabel getErrorExistNameLabel() {
-        if (errorExistNameLabel == null)
-            errorExistNameLabel = new JLabel("This name already exist");
-        errorExistNameLabel.setForeground(Color.red);
-        return errorExistNameLabel;
     }
 
     public void setErrorExistNameLabel(JLabel errorExistNameLabel) {
@@ -125,6 +118,6 @@ public class LoginPanelView extends AbstractView {
     }
 
     private void setErrorWrongNameLabelText(String errorText) {
-        getErrorWrongNameLabel().setText(errorText);
+        getErrorNameLabel().setText(errorText);
     }
 }

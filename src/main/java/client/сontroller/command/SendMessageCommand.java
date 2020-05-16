@@ -1,7 +1,7 @@
 package client.сontroller.command;
 import Server.ChatMessServer;
 import Server.ServerThread;
-import client.ChatMessengerApp;
+import client.main.ChatMessengerApp;
 import client.view.ChatPanelView;
 import domain.Message;
 import domain.xml.MessageBuilder;

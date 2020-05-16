@@ -1,9 +1,14 @@
 package client.util;
 
-import client.ChatMessengerApp;
-import client.util.Utility;
+import client.main.ChatMessengerApp;
+import client.view.ChatPanelView;
+import client.view.LoginPanelView;
+import client.сontroller.command.ShowLoginVewCommand;
 
+import java.awt.*;
 import java.util.TimerTask;
+
+import static client.view.ChatPanelView.LOGOUT_ACTION_COMMAND;
 
 public class UpdateUserTask extends TimerTask {
 
@@ -15,6 +20,13 @@ public class UpdateUserTask extends TimerTask {
 
     @Override
     public void run() {
-        Utility.usersUpdate(app);
+        if (!Utility.usersUpdate(app))
+        {
+            ChatPanelView panel = ChatPanelView.getInstance();
+            panel.clearFields();
+            panel.setVisible(false);
+            app.getTimer().cancel();
+            app.showLoginPanelView();
+        }
     }
 }

@@ -65,6 +65,7 @@ public class ChatPanelView extends AbstractView {
         InputMap im = getSendMessageButton().getInputMap();
         im.put(KeyStroke.getKeyStroke("ENTER"), "pressed");
         im.put(KeyStroke.getKeyStroke("released ENTER"), "released");
+        parent.getModel().getUserNamesList().addElement("General chat");
     }
 
     public void initModel(boolean getMessages) {
@@ -257,6 +258,6 @@ public class ChatPanelView extends AbstractView {
 
     //SETTERS
     public void updateUsersLabel() {
-        getUsersLabel().setText("usersOnline: " + parent.getModel().getUserNamesList().size());
+        getUsersLabel().setText("usersOnline: " + (parent.getModel().getUserNamesList().size() - 1));
     }
 }
