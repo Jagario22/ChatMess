@@ -241,10 +241,13 @@ public class ChatPanelView extends AbstractView {
             renderer.setHorizontalAlignment(SwingConstants.CENTER);
             usersJlist.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
-                    if ( e.getClickCount() == 1 ) {
-                        getMessagesTextPane().setText("");
-                        parent.getModel().setLastMessageId(0);
-                        parent.getModel().setReceiver(usersJlist.getSelectedValue());
+                    if (!usersJlist.getSelectedValue().equals(parent.getModel().getReceiver()))
+                    {
+                        if ( e.getClickCount() == 1 ) {
+                            getMessagesTextPane().setText("");
+                            parent.getModel().setLastMessageId(0);
+                            parent.getModel().setReceiver(usersJlist.getSelectedValue());
+                        }
                     }
                 }
             });

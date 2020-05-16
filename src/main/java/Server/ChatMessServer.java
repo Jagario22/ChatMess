@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 public class ChatMessServer {
-    public static final int PORT = 7080;
+    public static final int PORT = 7070;
     private static final int SERVER_TIMEOUT = 500;
     private static final String XML_FILE_NAME = "messages.xml";//?
     private static volatile boolean stop = false;

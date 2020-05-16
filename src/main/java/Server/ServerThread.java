@@ -76,14 +76,23 @@ public class ServerThread extends  Thread{
                                 clients.addName(currentUser);
                             }
                             log.debug("Add name " + currentUser + "to clientsOnline + : " + clients.getUserNames());
-                            List<Message> newMessages = messagesList.entrySet().stream()
-                                    .filter(message -> (message.getValue().getUserNF().equals(currentUser)
-                                    && message.getValue().getUserNT().equals(receiver))
-                                    || (message.getValue().getUserNF().equals(receiver)
-                                    && message.getValue().getUserNT().equals(currentUser)))
-                                    .filter(message -> message.getKey().compareTo(lastId) > 0)
-                                    .map(Map.Entry::getValue).collect(Collectors.toList());
-                            log.debug(newMessages.toString());
+                            List<Message> newMessages;
+                            if (!receiver.equals("General chat")) {
+                                 newMessages = messagesList.entrySet().stream()
+                                        .filter(message -> (message.getValue().getUserNF().equals(currentUser)
+                                                && message.getValue().getUserNT().equals(receiver))
+                                                || (message.getValue().getUserNF().equals(receiver)
+                                                && message.getValue().getUserNT().equals(currentUser)))
+                                        .filter(message -> message.getKey().compareTo(lastId) > 0)
+                                        .map(Map.Entry::getValue).collect(Collectors.toList());
+                                log.debug(newMessages.toString());
+                            } else
+                            {
+                                newMessages = messagesList.entrySet().stream()
+                                        .filter(message -> (message.getValue().getUserNT().equals("General chat")))
+                                        .filter(message -> message.getKey().compareTo(lastId) > 0)
+                                        .map(Map.Entry::getValue).collect(Collectors.toList());
+                            }
                             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
                             DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
                             Document document = builder.newDocument();

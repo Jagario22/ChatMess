@@ -49,7 +49,8 @@ public class Model {
         currentUser = "";
         loggedUser = "";
         lastMessageText = "";
-        receiver = "";
+        receiver = "General chat";
+        userNamesList.addElement("General chat");
     }
 
     private Model() {
@@ -85,10 +86,11 @@ public class Model {
         //delete
         for (int i = 0; i < userNamesList.size(); i++)
         {
-            if (!users.contains(userNamesList.get(i)) && !userNamesList.get(i).equals(""))
-            {
-                userNamesList.remove(i);
-                if (!deleted) deleted = true;
+            if (!userNamesList.get(i).equals("General chat")) {
+                if (!users.contains(userNamesList.get(i)) && !userNamesList.get(i).equals("")) {
+                    userNamesList.remove(i);
+                    if (!deleted) deleted = true;
+                }
             }
         }
         if (deleted || added)
