@@ -18,7 +18,6 @@ public class Model {
     private String serverIPAddress = "127.0.0.1";
     private final DefaultListModel<String> userNamesList = new DefaultListModel<String>();
     private String receiver;
-    private HashMap<String, Long> lastMessageIds = new HashMap<>();
 
     public boolean isContainUserName(String currentUser) {
         return userNamesList.contains(currentUser);
@@ -45,12 +44,12 @@ public class Model {
                 return result.append("</body></html>").toString();
             }
         });
+
         lastMessageId = 0L;
         currentUser = "";
         loggedUser = "";
         lastMessageText = "";
         receiver = "";
-        lastMessageIds.put("", 0L);
     }
 
     private Model() {
@@ -79,7 +78,6 @@ public class Model {
             }
             if (!userNamesList.contains(i) && !i.equals(currentUser)) {
                 userNamesList.addElement(i);
-                lastMessageIds.put(i, (long) 0);
                 if (!added) added = true;
             }
         }
@@ -90,7 +88,6 @@ public class Model {
             if (!users.contains(userNamesList.get(i)) && !userNamesList.get(i).equals(""))
             {
                 userNamesList.remove(i);
-                lastMessageIds.remove(userNamesList.get(i));
                 if (!deleted) deleted = true;
             }
         }
@@ -134,18 +131,15 @@ public class Model {
         return userNamesList;
     }
 
-    public Long getLastMessageIds() {
-        return lastMessageIds.get(receiver);
-    }
-
-    public long getLastMessageId() {
+    public Long getLastMessageId() {
         return lastMessageId;
     }
+
+    //SETTERS
 
     public void setLastMessageId(long lastMessageId) {
         this.lastMessageId = lastMessageId;
     }
-    //SETTERS
 
     public void setParent(ChatMessengerApp parent) {
         this.parent = parent;
@@ -173,9 +167,5 @@ public class Model {
 
     public void setServerIPAddress(String serverIPAddress) {
         this.serverIPAddress = serverIPAddress;
-    }
-
-    public void setLastMessageIds(Long id) {
-        this.lastMessageIds.put(receiver, id);
     }
 }

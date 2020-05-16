@@ -1,6 +1,5 @@
 package client.view;
 
-import client.view.AbstractView;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
@@ -13,7 +12,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.util.List;
 
 @Slf4j
 public class ChatPanelView extends AbstractView {
@@ -244,7 +242,8 @@ public class ChatPanelView extends AbstractView {
             usersJlist.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                     if ( e.getClickCount() == 1 ) {
-                        getTextMessageField().setText("");
+                        getMessagesTextPane().setText("");
+                        parent.getModel().setLastMessageId(0);
                         parent.getModel().setReceiver(usersJlist.getSelectedValue());
                     }
                 }

@@ -15,8 +15,7 @@ public class Message implements Serializable, Comparable <Message> {
     @Override
     public String toString() {
         return new StringBuilder("<p><b>")
-                .append(userNF)
-                .append((userNT.length() != 0) ? ("-> " + userNT) : "")
+                .append(userNT)
                 .append(":</b><br /><message>")
                 .append(text)
                 .append("</message><br /> <div style='text-align:right;font-size:small;'>")
