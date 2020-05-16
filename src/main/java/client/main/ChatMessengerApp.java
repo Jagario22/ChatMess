@@ -35,13 +35,21 @@ public class ChatMessengerApp extends JFrame {
     public static void main(String[] args) {
         JFrame frame = new ChatMessengerApp();
         frame.addWindowListener(new WindowAdapter(){
+
             public void windowClosing(WindowEvent we){
                 ChatMessengerApp app = (ChatMessengerApp) frame;
                 if (!(LoginPanelView.getInstance().isVisible())) {
                     Utility.deleteUser(app);
                     app.showLoginPanelView();
                 }
+            }
 
+            public void windowClosed(WindowEvent we){
+                ChatMessengerApp app = (ChatMessengerApp) frame;
+                if (!(LoginPanelView.getInstance().isVisible())) {
+                    Utility.deleteUser(app);
+                    app.showLoginPanelView();
+                }
             }
         });
         frame.setVisible(true);
@@ -119,6 +127,8 @@ public class ChatMessengerApp extends JFrame {
 
     public void showChatPanelView() {
         showPanel(getChatPanelView(true));
+        ChatPanelView.getInstance().getTextMessageField().requestFocusInWindow();
+        this.getRootPane().setDefaultButton(ChatPanelView.getInstance().getSendMessageButton());
     }
 
     private void showPanel(JPanel panel) {
@@ -129,5 +139,9 @@ public class ChatMessengerApp extends JFrame {
     public void showLoginPanelView() {
         showPanel(getLoginPanel());
         LoginPanelView.getInstance().getUserNameField().requestFocusInWindow();
+        this.getRootPane().setDefaultButton(LoginPanelView.getInstance().getLoginButton());
+        InputMap im = LoginPanelView.getInstance().getLoginButton().getInputMap();
+        im.put(KeyStroke.getKeyStroke("ENTER"), "pressed");
+        im.put(KeyStroke.getKeyStroke("released ENTER"), "released");
     }
 }

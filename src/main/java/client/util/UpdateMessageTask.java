@@ -2,7 +2,6 @@ package client.util;
 
 import client.main.ChatMessengerApp;
 import client.view.ChatPanelView;
-import client.view.LoginPanelView;
 
 import java.util.TimerTask;
 

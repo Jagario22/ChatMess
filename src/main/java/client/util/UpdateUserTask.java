@@ -2,13 +2,8 @@ package client.util;
 
 import client.main.ChatMessengerApp;
 import client.view.ChatPanelView;
-import client.view.LoginPanelView;
-import client.сontroller.command.ShowLoginVewCommand;
-
-import java.awt.*;
 import java.util.TimerTask;
 
-import static client.view.ChatPanelView.LOGOUT_ACTION_COMMAND;
 
 public class UpdateUserTask extends TimerTask {
 

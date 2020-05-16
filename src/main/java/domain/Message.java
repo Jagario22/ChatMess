@@ -1,7 +1,6 @@
 package domain;
 
 import java.io.Serializable;
-import java.security.cert.CertPathBuilder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Objects;
