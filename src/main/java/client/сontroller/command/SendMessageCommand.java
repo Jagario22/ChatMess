@@ -36,6 +36,8 @@ public class SendMessageCommand implements Command {
 
     @Override
     public void execute() {
+        if (panel.getTextMessageField().getText().equals(""))
+            return;
         try {
             addr = InetAddress.getByName(ChatMessengerApp.getModel().getServerIPAddress());
             socket = new Socket(addr, ChatMessServer.PORT);
@@ -49,6 +51,7 @@ public class SendMessageCommand implements Command {
             String result;
             do {
                 out.println(ServerThread.METHOD_PUT);
+                out.println(ServerThread.METHOD_PUT_MESSAGE);
 
                 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder builder = factory.newDocumentBuilder();

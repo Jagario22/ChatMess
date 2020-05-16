@@ -5,7 +5,7 @@ import java.util.*;
 
 @Slf4j
 public class ListOfClients {
-    //private HashMap<Socket,String> userNames = new HashMap<Socket, String>();
+
     private List<String> userNames = new ArrayList<>();
     private ListOfClients() {
     }

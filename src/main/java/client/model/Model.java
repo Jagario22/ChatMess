@@ -12,11 +12,12 @@ public class Model {
     private String currentUser;
     private String loggedUser;
     private String lastMessageText;
+    private String serverIPAddress = "127.0.0.1";
+    private String receiver;
     private long lastMessageId;
     private Set<Message> messages;
-    private String serverIPAddress = "127.0.0.1";
     private final DefaultListModel<String> userNamesList = new DefaultListModel<String>();
-    private String receiver;
+
 
     public boolean isContainUserName(String currentUser) {
         return userNamesList.contains(currentUser);
@@ -70,29 +71,23 @@ public class Model {
         boolean deleted = false;
 
         //add
-        for (String i : users)
-        {
-            if (i.equals(currentUser))
-            {
+        for (String i : users) {
+            if (i.equals(currentUser)) {
             }
-            if (!userNamesList.contains(i) && !i.equals(currentUser)) {
+            if (!userNamesList.contains(i) && !i.equals(currentUser) && !i.equals("")) {
                 userNamesList.addElement(i);
                 if (!added) added = true;
             }
         }
 
         //delete
-        for (int i = 0; i < userNamesList.size(); i++)
-        {
-            if (!userNamesList.get(i).equals("General chat")) {
-                if (!users.contains(userNamesList.get(i)) && !userNamesList.get(i).equals("")) {
-                    userNamesList.remove(i);
-                    if (!deleted) deleted = true;
-                }
+        for (int i = 0; i < userNamesList.size(); i++) {
+            if (!userNamesList.get(i).equals("General chat") && !users.contains(userNamesList.get(i))) {
+                userNamesList.remove(i);
+                if (!deleted) deleted = true;
             }
         }
-        if (deleted || added)
-        {
+        if (deleted || added) {
             parent.getChatPanelView(false).updateUsersLabel();
         }
     }

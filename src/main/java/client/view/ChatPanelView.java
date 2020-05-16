@@ -17,6 +17,9 @@ import java.io.IOException;
 public class ChatPanelView extends AbstractView {
     public static final String SEND_ACTION_COMMAND = "send";
     public static final String LOGOUT_ACTION_COMMAND = "logout";
+    public static final String LABEL_FONT = "Tahoma";
+    public static final String TEXT_PANE_COLOR = "#4A586E";
+    public static final String PANEL_COLOR = "#EEEDEA";
 
     private JPanel messagesMainPanel; //главная панель
     private JPanel usersListPanel;
@@ -55,6 +58,7 @@ public class ChatPanelView extends AbstractView {
         this.setLayout(new BorderLayout());
 
         JPanel header = new JPanel(new BorderLayout());
+        header.setBackground(Color.decode(PANEL_COLOR));
         header.add(getPromptLabel(), BorderLayout.WEST);
         header.add(getLogoutButton(), BorderLayout.EAST);
 
@@ -62,9 +66,6 @@ public class ChatPanelView extends AbstractView {
         this.add(getMessagesMainPanel(), BorderLayout.CENTER);
         this.add(getTextMessagePanel(), BorderLayout.SOUTH);
 
-        InputMap im = getSendMessageButton().getInputMap();
-        im.put(KeyStroke.getKeyStroke("ENTER"), "pressed");
-        im.put(KeyStroke.getKeyStroke("released ENTER"), "released");
         parent.getModel().getUserNamesList().addElement("General chat");
     }
 
@@ -75,9 +76,13 @@ public class ChatPanelView extends AbstractView {
         }
         getPromptLabel().setText("Hello, " + parent.getModel().getLoggedUser() + "!");
         updateUsersLabel();
-        getTextMessageField().requestFocusInWindow();
-        parent.getRootPane().setDefaultButton(getSendMessageButton());
 
+        createFocus();
+    }
+    public void createFocus()
+    {
+        ChatPanelView.getInstance().getTextMessageField().requestFocusInWindow();
+        parent.getRootPane().setDefaultButton(ChatPanelView.getInstance().getSendMessageButton());
     }
 
     @Override
@@ -120,7 +125,6 @@ public class ChatPanelView extends AbstractView {
             messagesPanel = new JPanel();
             messagesPanel.setLayout(new BorderLayout());
             messagesPanel.setFont(new Font(Font.SERIF, Font.PLAIN, 14));
-
         }
         return messagesPanel;
     }
@@ -131,8 +135,6 @@ public class ChatPanelView extends AbstractView {
             usersListPanel = new JPanel();
 
             JLabel l = getUsersLabel();
-            l.setFont(new Font(Font.SERIF, Font.PLAIN, 14));
-
 
             JPanel JListPanel = new JPanel();
             JListPanel.setLayout(new BorderLayout());
@@ -144,9 +146,10 @@ public class ChatPanelView extends AbstractView {
 
             userPanel.add(l);
             userPanel.add(JListPanel);
+            userPanel.setBackground(Color.decode(PANEL_COLOR));
 
             usersListPanel.setLayout(new BorderLayout());
-            usersListPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+            //usersListPanel.setBorder(BorderFactory.createLineBorder(Color.decode(TEXT_PANE_COLOR), 3));
             usersListPanel.add(userPanel, BorderLayout.CENTER);
         }
         return usersListPanel;
@@ -166,7 +169,8 @@ public class ChatPanelView extends AbstractView {
         if (usersLabel == null) {
             usersLabel = new JLabel();
             usersLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
+            usersLabel.setFont(new Font("Tamoha", Font.BOLD, 14));
+            usersLabel.setForeground(Color.decode(TEXT_PANE_COLOR));
         }
         return usersLabel;
     }
@@ -174,6 +178,8 @@ public class ChatPanelView extends AbstractView {
     public JLabel getPromptLabel() {
         if (promptLabel == null) {
             promptLabel = new JLabel("Hello, " + parent.getModel().getLoggedUser() + "!");
+            promptLabel.setForeground(Color.decode(TEXT_PANE_COLOR));
+            promptLabel.setFont(new Font(LABEL_FONT, Font.BOLD, 15));
         }
         return promptLabel;
     }
@@ -181,6 +187,7 @@ public class ChatPanelView extends AbstractView {
     public JTextPane getMessagesTextPane() {
         if (messagesTextPane == null) {
             messagesTextPane = new JTextPane();
+            messagesTextPane.setBackground(Color.decode(TEXT_PANE_COLOR));
             messagesTextPane.setContentType("text/html");
             messagesTextPane.setEditable(false);
             messagesTextPane.setName("messagesTextArea");
@@ -195,6 +202,7 @@ public class ChatPanelView extends AbstractView {
     public JScrollPane getMessagesListPanel() {
         if (messagesListPanel == null) {
             messagesListPanel = new JScrollPane(getMessagesTextPane());
+            messagesListPanel.setBorder(BorderFactory.createLineBorder(Color.decode(TEXT_PANE_COLOR), 2));
             messagesListPanel
                     .setVerticalScrollBarPolicy(
                             ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -214,7 +222,7 @@ public class ChatPanelView extends AbstractView {
     public JButton getLogoutButton() {
         if (logoutButton == null) {
             logoutButton = new JButton();
-            logoutButton.setText("Logout");
+            setButton(logoutButton, "Logout");
             logoutButton.setName("logoutButton");
             logoutButton.setActionCommand(LOGOUT_ACTION_COMMAND);
             logoutButton.addActionListener(parent.getController());
@@ -225,7 +233,8 @@ public class ChatPanelView extends AbstractView {
     public JButton getSendMessageButton() {
         if (sendMessageButton == null) {
             sendMessageButton = new JButton();
-            sendMessageButton.setText("Send");
+            setButton(sendMessageButton, "Send");
+            sendMessageButton.setFont(new Font("Tahoma", Font.BOLD, 14));
             sendMessageButton.setName("sendMessageButton");
             sendMessageButton.setActionCommand(SEND_ACTION_COMMAND);
             sendMessageButton.addActionListener(parent.getController());
@@ -235,17 +244,22 @@ public class ChatPanelView extends AbstractView {
 
     public JList<String> getUsersJlist() {
         if (usersJlist == null) {
-            usersJlist = new JList<String>(parent.getModel().getUserNamesList());
-            usersJlist.setPreferredSize(new Dimension((int)(getWidth()*0.2), getHeight()));
-            usersJlist.setFont(new Font(Font.SERIF, Font.PLAIN, 14));
+            usersJlist = new JList<>(parent.getModel().getUserNamesList());
+            usersJlist.setPreferredSize(new Dimension((int) (getWidth() * 0.2), getHeight()));
+
+            usersJlist.setFont(new Font("Tamoha", Font.BOLD, 14));
+            usersJlist.setForeground(Color.decode(TEXT_PANE_COLOR));
+            usersJlist.setBackground(Color.decode(PANEL_COLOR));
+
             DefaultListCellRenderer renderer = (DefaultListCellRenderer) usersJlist.getCellRenderer();
             renderer.setHorizontalAlignment(SwingConstants.CENTER);
+
             usersJlist.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
-                    if (!usersJlist.getSelectedValue().equals(parent.getModel().getReceiver()))
-                    {
-                        if ( e.getClickCount() == 1 ) {
-                            getMessagesTextPane().setText("");
+                    if (!usersJlist.getSelectedValue().equals(parent.getModel().getReceiver())) {
+                        if (e.getClickCount() == 1) {
+                            clearFields();
+                            parent.getModel().getMessages().clear();
                             parent.getModel().setLastMessageId(0);
                             parent.getModel().setReceiver(usersJlist.getSelectedValue());
                         }
@@ -258,6 +272,18 @@ public class ChatPanelView extends AbstractView {
 
     //SETTERS
     public void updateUsersLabel() {
-        getUsersLabel().setText("usersOnline: " + (parent.getModel().getUserNamesList().size() - 1));
+        getUsersLabel().setText("Users online: " + (parent.getModel().getUserNamesList().size() - 1));
+    }
+
+    public void setButton(JButton btn, String text) {
+        btn.setBackground(Color.decode("#00848C"));
+        btn.setForeground(Color.WHITE);
+        btn.setFocusPainted(false);
+        btn.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btn.setText(text);
+    }
+
+    public void setSendMessageButton(JButton sendMessageButton) {
+        this.sendMessageButton = sendMessageButton;
     }
 }

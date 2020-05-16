@@ -55,36 +55,43 @@ public class Controller implements ActionListener {
                 LoginPanelView view = Utility.findParent(
                         (Component) e.getSource(), LoginPanelView.class);
 
-                if (! EmailValidator.getInstance().isValid(view.getUserNameField().getText()) ||
+                if (!EmailValidator.getInstance().isValid(view.getUserNameField().getText()) ||
                         !InetAddressValidator.getInstance().isValid(view.getServerIpAddressField().getText())) {
                     command = new LoginErrorCommand(view, WRONG_NAME_ERROR);
+                    view.CreateFocus();
                     return;
                 }
 
                 if (!Utility.usersUpdate(parent)) {
                     command = new LoginErrorCommand(view, SERVER_ERROR);
+                    view.CreateFocus();
                     return;
                 }
 
                 String userName = view.getUserNameField().getText();
                 model.setCurrentUser(userName);
 
-
-                if (!model.isContainUserName(userName))
-                {
+                if (!model.isContainUserName(userName)) {
+                    if (!Utility.putUser(parent))
+                    {
+                        command = new LoginErrorCommand(view, SERVER_ERROR);
+                        view.CreateFocus();
+                        return;
+                    }
                     model.setServerIPAddress(view.getServerIpAddressField().getText());
                     command = new ShowChatViewCommand(parent, view);
                 } else {
                     model.setCurrentUser("");
                     command = new LoginErrorCommand(view, NAME_EXIST);
+                    view.CreateFocus();
                 }
             }
             break;
             case SEND_ACTION_COMMAND: {
                 ChatPanelView view = Utility.findParent(
                         (Component) e.getSource(), ChatPanelView.class);
-                parent.getModel().setLastMessageText(view.getTextMessageField().getText());
-                command = new SendMessageCommand(parent, view);
+                    parent.getModel().setLastMessageText(view.getTextMessageField().getText());
+                    command = new SendMessageCommand(parent, view);
             }
             break;
             case LOGOUT_ACTION_COMMAND: {

@@ -2,6 +2,7 @@ package client.util;
 
 import client.main.ChatMessengerApp;
 import client.view.ChatPanelView;
+
 import java.util.TimerTask;
 
 
@@ -15,8 +16,7 @@ public class UpdateUserTask extends TimerTask {
 
     @Override
     public void run() {
-        if (!Utility.usersUpdate(app))
-        {
+        if (!Utility.usersUpdate(app)) {
             ChatPanelView panel = ChatPanelView.getInstance();
             panel.clearFields();
             panel.setVisible(false);

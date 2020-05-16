@@ -21,32 +21,29 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class ServerThread extends  Thread{
+
     public static final String METHOD_GET = "GET";
     public static final String METHOD_PUT = "PUT";
     public static final String END_LINE_MESSAGE = "END";
     public static final String METHOD_DELETE = "DELETE";
     public static final String METHOD_GET_MESSAGES = "MESSAGES";
     public static final String METHOD_GET_USERS = "USERS";
+    public static final String METHOD_PUT_MESSAGE = "MESSAGE";
+    public static final String METHOD_PUT_USER = "USER";
+
     private final Socket socket;
-    private final AtomicInteger messageid;
+    private final AtomicInteger messageId;
+
     private final ListOfClients clients;
-
-    public AtomicInteger getMessageid() {
-        return messageid;
-    }
-
-    public Map<Long, Message> getMessagesList() {
-        return messagesList;
-    }
-
     private final Map<Long, Message> messagesList;
+
     private final BufferedReader in;
     private final PrintWriter out;
 
 
     public ServerThread(Socket socket, AtomicInteger messageId, Map<Long, Message> messagesList, ListOfClients clients) throws IOException {
         this.socket = socket;
-        this.messageid = messageId;
+        this.messageId = messageId;
         this.messagesList = messagesList;
         this.clients = clients;
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -72,10 +69,6 @@ public class ServerThread extends  Thread{
                             log.debug("currentUser: " + currentUser);
                             String receiver = in.readLine();
                             log.debug("receiver: " + receiver);
-                            if (!clients.ContainsName(currentUser)) {
-                                clients.addName(currentUser);
-                            }
-                            log.debug("Add name " + currentUser + "to clientsOnline + : " + clients.getUserNames());
                             List<Message> newMessages;
                             if (!receiver.equals("General chat")) {
                                  newMessages = messagesList.entrySet().stream()
@@ -103,7 +96,6 @@ public class ServerThread extends  Thread{
                             break;
                         }
                         case METHOD_GET_USERS: {
-                            String currentUser = in.readLine();
                             out.println(clients.toString());
                             out.println(END_LINE_MESSAGE);
                             out.flush();
@@ -112,40 +104,53 @@ public class ServerThread extends  Thread{
                     }
                     break;
                 }
-                case METHOD_PUT:
+                case METHOD_PUT: {
                     log.debug("put");
                     requestLine = in.readLine();
-                    StringBuilder mesStr = new StringBuilder();
-
-
-                    while (!END_LINE_MESSAGE.equals(requestLine))
+                    switch (requestLine)
                     {
-                        mesStr.append(requestLine);
-                        requestLine = in.readLine();
+                        case METHOD_PUT_MESSAGE: {
+                            requestLine = in.readLine();
+                            StringBuilder mesStr = new StringBuilder();
+
+                            while (!END_LINE_MESSAGE.equals(requestLine)) {
+                                mesStr.append(requestLine);
+                                requestLine = in.readLine();
+                            }
+
+                            log.debug(String.valueOf(mesStr));
+
+                            SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+                            SAXParser parser = saxParserFactory.newSAXParser();
+                            List<Message> messages = new ArrayList<>();
+                            MessageParser saxp = new MessageParser(messageId, messages);
+
+                            InputStream is = new ByteArrayInputStream(mesStr.toString().getBytes());
+                            parser.parse(is, saxp);
+
+
+                            for (Message message : messages) {
+                                messagesList.put(message.getId(), message);
+                            }
+
+                            log.trace("Echoing: " + messages);
+                            out.println("OK");
+                            out.flush();
+                            out.close();
+                        }
+                        case METHOD_PUT_USER: {
+                            String currentUser = in.readLine();
+                            if (!clients.ContainsName(currentUser)) {
+                                log.debug("Add name " + currentUser + " to clients");
+                                clients.addName(currentUser);
+                            }
+                            log.debug("clientsOnline: " + clients.getUserNames());
+                            out.println("OK");
+                            out.flush();
+                        }
                     }
-
-                    log.debug(String.valueOf(mesStr));
-
-                    SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
-                    SAXParser parser = saxParserFactory.newSAXParser();
-                    List<Message> messages = new ArrayList<>();
-                    MessageParser saxp = new MessageParser(messageid, messages);
-
-                    InputStream is = new ByteArrayInputStream(mesStr.toString().getBytes());
-                    parser.parse(is,saxp);
-
-
-                    for (Message message: messages)
-                    {
-                        messagesList.put(message.getId(), message);
-                    }
-
-                    log.trace("Echoing: " + messages);
-                    out.println("OK");
-                    out.flush();
-                    out.close();
                     break;
-
+                }
                 case METHOD_DELETE:
                     requestLine = in.readLine();
                     log.debug("Remove name " + requestLine + " from clients");
@@ -169,13 +174,20 @@ public class ServerThread extends  Thread{
             try {
                 log.debug("Socket closing...");
                 log.debug("Close stream objects");
+                log.debug("clientsOnline: " + clients.getUserNames());
                 in.close();
                 out.close();
-                //clients.removeName(socket);
                 socket.close();
             } catch (IOException e) {
                 log.error("Socket not closed");
             }
         }
+    }
+
+    public AtomicInteger getMessageId() {
+        return messageId;
+    }
+    public Map<Long, Message> getMessagesList() {
+        return messagesList;
     }
 }
