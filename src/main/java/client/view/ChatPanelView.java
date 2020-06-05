@@ -78,8 +78,8 @@ public class ChatPanelView extends AbstractView {
 
         createFocus();
     }
-    public void createFocus()
-    {
+
+    public void createFocus() {
         ChatPanelView.getInstance().getTextMessageField().requestFocusInWindow();
         parent.getRootPane().setDefaultButton(ChatPanelView.getInstance().getSendMessageButton());
     }

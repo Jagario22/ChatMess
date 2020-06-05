@@ -1,4 +1,4 @@
-package UIServer.view;
+package GUIServer.view;
 
 import java.util.HashMap;
 import java.util.Map;

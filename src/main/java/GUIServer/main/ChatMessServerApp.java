@@ -1,13 +1,12 @@
-package UIServer.main;
+package GUIServer.main;
 
 import Server.ChatMessServer;
-import UIServer.controller.Controller;
-import UIServer.controller.WindowLictenerHandler;
-import UIServer.model.Model;
-import UIServer.view.AbstractView;
-import UIServer.view.ServerPanelView;
-import UIServer.view.ViewFactory;
-import lombok.SneakyThrows;
+import GUIServer.controller.Controller;
+import GUIServer.controller.WindowLictenerHandler;
+import GUIServer.model.Model;
+import GUIServer.view.AbstractView;
+import GUIServer.view.ServerPanelView;
+import GUIServer.view.ViewFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.xml.sax.SAXException;
 
@@ -15,8 +14,6 @@ import org.xml.sax.SAXException;
 import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.Timer;
 

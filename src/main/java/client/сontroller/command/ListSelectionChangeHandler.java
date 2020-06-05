@@ -9,12 +9,11 @@ import java.awt.event.MouseListener;
 public class ListSelectionChangeHandler implements MouseListener {
     JList usersJlist;
     ChatMessengerApp parent;
-    public ListSelectionChangeHandler(JList usersJList, ChatMessengerApp parent)
-    {
+
+    public ListSelectionChangeHandler(JList usersJList, ChatMessengerApp parent) {
         this.usersJlist = usersJList;
         this.parent = parent;
     }
-
 
 
     @Override

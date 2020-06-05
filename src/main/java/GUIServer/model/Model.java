@@ -1,11 +1,10 @@
-package UIServer.model;
+package GUIServer.model;
 
 import Server.ListOfClients;
-import UIServer.main.ChatMessServerApp;
+import GUIServer.main.ChatMessServerApp;
 import domain.Message;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 

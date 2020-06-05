@@ -1,8 +1,8 @@
-package UIServer.view;
+package GUIServer.view;
 
 
 
-import UIServer.controller.ListSelectionChangeHandler;
+import GUIServer.controller.ListSelectionChangeHandler;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;

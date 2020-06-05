@@ -71,7 +71,7 @@ public class ServerThread extends  Thread{
                             log.debug("receiver: " + receiver);
                             List<Message> newMessages;
                             if (!receiver.equals("General chat")) {
-                                 newMessages = messagesList.entrySet().stream()
+                                newMessages = messagesList.entrySet().stream()
                                         .filter(message -> (message.getValue().getUserNF().equals(currentUser)
                                                 && message.getValue().getUserNT().equals(receiver))
                                                 || (message.getValue().getUserNF().equals(receiver)

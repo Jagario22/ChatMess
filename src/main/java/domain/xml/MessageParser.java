@@ -85,8 +85,7 @@ public class MessageParser extends DefaultHandler {
 
             if (message.getId() == null) {
                 message.setId(newId);
-            } else
-            {
+            } else {
                 newId = message.getId();
                 id.set(newId.intValue());
             }
@@ -100,7 +99,7 @@ public class MessageParser extends DefaultHandler {
 
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
-        if ("message".equals(thisElement)){
+        if ("message".equals(thisElement)) {
             String messBody = new String(ch, start, length).trim();
             log.trace(messBody);
             message.setText(messBody);

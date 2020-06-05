@@ -1,9 +1,8 @@
-package UIServer.view;
+package GUIServer.view;
 
-import UIServer.main.ChatMessServerApp;
+import GUIServer.main.ChatMessServerApp;
 
 import javax.swing.*;
-import java.awt.*;
 
 public abstract class AbstractView extends JPanel {
     protected static ChatMessServerApp parent;

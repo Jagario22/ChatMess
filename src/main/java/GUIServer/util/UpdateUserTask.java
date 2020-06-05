@@ -1,6 +1,6 @@
-package UIServer.util;
+package GUIServer.util;
 
-import UIServer.main.ChatMessServerApp;
+import GUIServer.main.ChatMessServerApp;
 
 import java.util.TimerTask;
 

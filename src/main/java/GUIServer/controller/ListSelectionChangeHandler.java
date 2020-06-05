@@ -1,6 +1,6 @@
-package UIServer.controller;
+package GUIServer.controller;
 
-import UIServer.main.ChatMessServerApp;
+import GUIServer.main.ChatMessServerApp;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;

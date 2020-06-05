@@ -1,4 +1,4 @@
-package UIServer.controller;
+package GUIServer.controller;
 
 import Server.ChatMessServer;
 import lombok.SneakyThrows;

@@ -1,8 +1,8 @@
-package UIServer.util;
+package GUIServer.util;
 
 import Server.ChatMessServer;
-import UIServer.main.ChatMessServerApp;
-import UIServer.model.Model;
+import GUIServer.main.ChatMessServerApp;
+import GUIServer.model.Model;
 import domain.Message;
 
 import java.awt.*;

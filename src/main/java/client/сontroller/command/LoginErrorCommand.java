@@ -11,6 +11,7 @@ public class  LoginErrorCommand implements Command {
     public static final String SERVER_ERROR = "SOCKET ERROR";
     private String error;
     private LoginPanelView view;
+
     public LoginErrorCommand(LoginPanelView view, String error) {
         this.error = error;
         this.view = view;
@@ -21,8 +22,7 @@ public class  LoginErrorCommand implements Command {
         view.setVisible(false);
         JLabel errorLabel = view.getErrorNameLabel();
 
-        switch (error)
-        {
+        switch (error) {
             case WRONG_NAME_ERROR:
                 errorLabel.setText("Wrong server ip address or user name");
                 view.getMainPanel().add(errorLabel);

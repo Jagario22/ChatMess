@@ -1,9 +1,8 @@
-package UIServer.controller;
+package GUIServer.controller;
 
-import UIServer.main.ChatMessServerApp;
-import UIServer.util.UpdateMessageTask;
-import UIServer.util.UpdateUserTask;
-import UIServer.util.Utility;
+import GUIServer.main.ChatMessServerApp;
+import GUIServer.util.UpdateMessageTask;
+import GUIServer.util.UpdateUserTask;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Timer;

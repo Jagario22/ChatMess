@@ -72,8 +72,7 @@ public class Controller implements ActionListener {
                 model.setCurrentUser(userName);
 
                 if (!model.isContainUserName(userName)) {
-                    if (!Utility.putUser(parent))
-                    {
+                    if (!Utility.putUser(parent)) {
                         command = new LoginErrorCommand(view, SERVER_ERROR);
                         view.CreateFocus();
                         return;
@@ -90,8 +89,8 @@ public class Controller implements ActionListener {
             case SEND_ACTION_COMMAND: {
                 ChatPanelView view = Utility.findParent(
                         (Component) e.getSource(), ChatPanelView.class);
-                    parent.getModel().setLastMessageText(view.getTextMessageField().getText());
-                    command = new SendMessageCommand(parent, view);
+                parent.getModel().setLastMessageText(view.getTextMessageField().getText());
+                command = new SendMessageCommand(parent, view);
             }
             break;
             case LOGOUT_ACTION_COMMAND: {

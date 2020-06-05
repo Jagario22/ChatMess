@@ -32,8 +32,9 @@ public class ChatMessServer {
     private static Map<Long, Message> messagesList =
             Collections.synchronizedSortedMap(new TreeMap<Long, Message>());
     private static ServerSocket serverSocket;
+
     public static void run() throws IOException, ParserConfigurationException, SAXException {
-         ListOfClients clients = ListOfClients.getInstance();
+        ListOfClients clients = ListOfClients.getInstance();
         // Load xml files with prev messages
         loadMessageXMLFile();
 
@@ -45,8 +46,7 @@ public class ChatMessServer {
         log.info("Server started on port: " + PORT);
 
         // loop of request in sockets with timeout
-        while (!stop)
-        {
+        while (!stop) {
             serverSocket.setSoTimeout(SERVER_TIMEOUT);
             Socket socket;
             try {
@@ -74,7 +74,7 @@ public class ChatMessServer {
         Document document = builder.newDocument();
         String xmlContent = MessageBuilder.buildDocument(document, messagesList.values());
 
-        OutputStream stream  = new FileOutputStream(new File(XML_FILE_NAME));
+        OutputStream stream = new FileOutputStream(new File(XML_FILE_NAME));
         OutputStreamWriter out = new OutputStreamWriter(stream, StandardCharsets.UTF_8);
         out.write(xmlContent + "\n");
         out.flush();
@@ -82,7 +82,7 @@ public class ChatMessServer {
     }
 
     private static void loadMessageXMLFile() throws ParserConfigurationException, SAXException, IOException {
-        SAXParserFactory  factory = SAXParserFactory.newInstance();
+        SAXParserFactory factory = SAXParserFactory.newInstance();
         SAXParser parser = factory.newSAXParser();
         List<Message> messages = new ArrayList<>();
         MessageParser saxp = new MessageParser(id, messages);
@@ -90,9 +90,8 @@ public class ChatMessServer {
         InputStream is = new ByteArrayInputStream(
                 Files.readAllBytes(str));
 
-        parser.parse(is,saxp);
-        for (Message message: messages)
-        {
+        parser.parse(is, saxp);
+        for (Message message : messages) {
             messagesList.put(message.getId(), message); //??
         }
         id.incrementAndGet();
@@ -104,16 +103,14 @@ public class ChatMessServer {
             @Override
             public void run() {
                 BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-                while(true)
-                {
+                while (true) {
                     String buf;
                     try {
                         buf = br.readLine();
                         if ("quit".equals(buf)) {
                             stop = true;
                             break;
-                        } else
-                        {
+                        } else {
                             log.warn("Type 'quit' for exit termination");
                         }
                     } catch (IOException e) {
@@ -151,6 +148,7 @@ public class ChatMessServer {
     public static void setServerSocket(ServerSocket serverSocket) {
         ChatMessServer.serverSocket = serverSocket;
     }
+
     public static void setStop(boolean stop) {
         ChatMessServer.stop = stop;
     }

@@ -1,4 +1,5 @@
 package client.сontroller.command;
+
 import Server.ChatMessServer;
 import Server.ServerThread;
 import client.main.ChatMessengerApp;
@@ -70,16 +71,14 @@ public class SendMessageCommand implements Command {
                 out.println(ServerThread.END_LINE_MESSAGE);
                 result = in.readLine();
             } while (!"OK".equals(result));
-        } catch (IOException | ParserConfigurationException e)
-        {
+        } catch (IOException | ParserConfigurationException e) {
             log.error("Send message error: " + e.getMessage());
         } finally {
             try {
                 in.close();
                 out.close();
                 socket.close();
-            } catch (IOException e)
-            {
+            } catch (IOException e) {
                 log.error("Socket close error: " + e.getMessage());
             }
         }
