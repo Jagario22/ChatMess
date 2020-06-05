@@ -1,5 +1,6 @@
 package client.view;
 
+import client.сontroller.command.ListSelectionChangeHandler;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
@@ -9,8 +10,6 @@ import javax.swing.text.Element;
 import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLDocument;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 @Slf4j
@@ -138,6 +137,7 @@ public class ChatPanelView extends AbstractView {
 
             JPanel JListPanel = new JPanel();
             JListPanel.setLayout(new BorderLayout());
+
             JListPanel.add(getUsersJlist(), BorderLayout.CENTER);
 
 
@@ -214,7 +214,7 @@ public class ChatPanelView extends AbstractView {
         if (textMessageField == null) {
             textMessageField = new JTextField(12);
             textMessageField.setName("textMessageField");
-
+            textMessageField.setFont(new Font("Tamoha", Font.BOLD, 15));
         }
         return textMessageField;
     }
@@ -253,19 +253,21 @@ public class ChatPanelView extends AbstractView {
 
             DefaultListCellRenderer renderer = (DefaultListCellRenderer) usersJlist.getCellRenderer();
             renderer.setHorizontalAlignment(SwingConstants.CENTER);
+            //usersJlist.addListSelectionListener(new SharedListSelectionHandler(parent));
+//            usersJlist.addMouseListener(new MouseAdapter() {
+//                public void mouseClicked(MouseEvent e) {
+//                    if (!usersJlist.getSelectedValue().equals(parent.getModel().getReceiver())) {
+//                        if (e.getClickCount() == 1) {
+//                            clearFields();
+//                            parent.getModel().getMessages().clear();
+//                            parent.getModel().setLastMessageId(0);
+//                            parent.getModel().setReceiver(usersJlist.getSelectedValue());
+//                        }
+//                    }
+//                }
+//            });
+            usersJlist.addMouseListener(new ListSelectionChangeHandler(usersJlist, parent));
 
-            usersJlist.addMouseListener(new MouseAdapter() {
-                public void mouseClicked(MouseEvent e) {
-                    if (!usersJlist.getSelectedValue().equals(parent.getModel().getReceiver())) {
-                        if (e.getClickCount() == 1) {
-                            clearFields();
-                            parent.getModel().getMessages().clear();
-                            parent.getModel().setLastMessageId(0);
-                            parent.getModel().setReceiver(usersJlist.getSelectedValue());
-                        }
-                    }
-                }
-            });
         }
         return usersJlist;
     }

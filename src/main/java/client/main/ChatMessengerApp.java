@@ -32,11 +32,11 @@ public class ChatMessengerApp extends JFrame {
 
 
     public static void main(String[] args) {
-        JFrame frame = new ChatMessengerApp();
+        ChatMessengerApp frame = new ChatMessengerApp();
         frame.addWindowListener(new WindowAdapter() {
 
             public void windowClosing(WindowEvent we) {
-                ChatMessengerApp app = (ChatMessengerApp) frame;
+                ChatMessengerApp app = frame;
                 if (!(LoginPanelView.getInstance().isVisible())) {
                     Utility.deleteUser(app);
                     app.showLoginPanelView();
@@ -44,7 +44,7 @@ public class ChatMessengerApp extends JFrame {
             }
 
             public void windowClosed(WindowEvent we) {
-                ChatMessengerApp app = (ChatMessengerApp) frame;
+                ChatMessengerApp app = frame;
                 if (!(LoginPanelView.getInstance().isVisible())) {
                     Utility.deleteUser(app);
                     app.showLoginPanelView();

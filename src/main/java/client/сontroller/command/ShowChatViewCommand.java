@@ -32,7 +32,5 @@ public class ShowChatViewCommand implements Command {
         app.getTimer().scheduleAtFixedRate(new UpdateUserTask(app),
                 ChatMessengerApp.DELAY, ChatMessengerApp.PERIOD);
         app.showChatPanelView();
-
-
     }
 }

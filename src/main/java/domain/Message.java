@@ -13,11 +13,11 @@ public class Message implements Serializable, Comparable <Message> {
 
     @Override
     public String toString() {
-        return new StringBuilder("<div style='color:white;font-family:verdana;'><p><b>")
+        return new StringBuilder("<div style='color:white;font-family:verdana;font-size:12px'><p><b>")
                 .append(userNF)
-                .append(":</div></b><br /><div style='color:white;font-family:Georgia;'><message>")
+                .append(":</div></b><br /><div style='color:white;font-family:Tamoha;font-size:11px'><b><message>")
                 .append(text)
-                .append("</div></message><br /> <div style='text-align:right;font-family:verdana;font-size:10px;color:white'>")
+                .append("</div></message></b><br /> <div style='text-align:right;font-family:verdana;font-size:10px;color:white'>")
                 .append((new SimpleDateFormat("HH:mm:ss dd-MMM-yyyy"))
                         .format(moment.getTime().getTime()))
                 .append("</div><br /></p>")

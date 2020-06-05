@@ -31,8 +31,8 @@ public class ChatMessServer {
     private static AtomicInteger id = new AtomicInteger(0);
     private static Map<Long, Message> messagesList =
             Collections.synchronizedSortedMap(new TreeMap<Long, Message>());
-
-    public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException {
+    private static ServerSocket serverSocket;
+    public static void run() throws IOException, ParserConfigurationException, SAXException {
          ListOfClients clients = ListOfClients.getInstance();
         // Load xml files with prev messages
         loadMessageXMLFile();
@@ -41,7 +41,7 @@ public class ChatMessServer {
         quitCommandThread();
 
         // Create new Socket Server
-        ServerSocket serverSocket = new ServerSocket(PORT);
+        serverSocket = new ServerSocket(PORT);
         log.info("Server started on port: " + PORT);
 
         // loop of request in sockets with timeout
@@ -68,7 +68,7 @@ public class ChatMessServer {
         serverSocket.close();
     }
 
-    private static void saveMessagesXMLFile() throws ParserConfigurationException, IOException {
+    public static void saveMessagesXMLFile() throws ParserConfigurationException, IOException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document document = builder.newDocument();
@@ -122,6 +122,37 @@ public class ChatMessServer {
                 }
             }
         }.start();
+    }
+
+
+    public static ChatMessServer getInstance() {
+        return ChatMessServerHolder.INSTANCE;
+    }
+
+    private static class ChatMessServerHolder {
+        private static final ChatMessServer INSTANCE = new ChatMessServer();
+    }
+
+    //GETTERS
+
+    public static Map<Long, Message> getMessagesList() {
+        return messagesList;
+    }
+
+    public static ServerSocket getServerSocket() {
+        return serverSocket;
+    }
+
+    //SETTERS
+    public static void setMessagesList(Map<Long, Message> messagesList) {
+        ChatMessServer.messagesList = messagesList;
+    }
+
+    public static void setServerSocket(ServerSocket serverSocket) {
+        ChatMessServer.serverSocket = serverSocket;
+    }
+    public static void setStop(boolean stop) {
+        ChatMessServer.stop = stop;
     }
 }
 

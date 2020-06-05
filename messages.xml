@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <messages>
-    <message id="1" moment="13:14:00 07-04-2020" receiver="you@i.ua" sender="me@i.ua">hello bro</message>
-    <message id="2" moment="20:20:00 08-04-2020" receiver="she@i.ua" sender="me@i.ua">kek</message>
-    <message id="3" moment="17:03:15 14-05-2020" receiver="me@i.ua" sender="you@i.ua">hello</message>
-    <message id="4" moment="17:03:33 14-05-2020" receiver="you@i.ua" sender="me@i.ua">how are you?</message>
-    <message id="5" moment="17:04:00 14-05-2020" receiver="me@i.ua" sender="you@i.ua">i'm okay</message>
-    <message id="6" moment="14:11:16 16-05-2020" receiver="General chat" sender="me@i.ua">hello</message>
-    <message id="7" moment="20:43:16 16-05-2020" receiver="me@i.ua" sender="you@i.ua">another test</message>
-    <message id="8" moment="20:43:27 16-05-2020" receiver="you@i.ua" sender="me@i.ua">yes i see</message>
-    <message id="9" moment="20:43:41 16-05-2020" receiver="General chat" sender="she@i.ua">hello</message>
-    <message id="10" moment="20:43:44 16-05-2020"
-        receiver="General chat" sender="she@i.ua">it's me</message>
-    <message id="11" moment="20:43:55 16-05-2020" receiver="she@i.ua" sender="me@i.ua">lol</message>
-    <message id="12" moment="20:44:17 16-05-2020" receiver="you@i.ua" sender="she@i.ua">я тебя ещё здесь не видала</message>
-    <message id="13" moment="20:44:30 16-05-2020" receiver="she@i.ua" sender="you@i.ua">я тебя тоже хехе</message>
+    <message id="1" moment="15:27:08 24-05-2020" receiver="General chat" sender="james@i.ua">hello guys</message>
+    <message id="2" moment="15:27:22 24-05-2020" receiver="General chat" sender="clars@i.ua">hello</message>
+    <message id="3" moment="15:27:35 24-05-2020" receiver="james@i.ua" sender="clars@i.ua">hey</message>
+    <message id="4" moment="15:27:43 24-05-2020" receiver="james@i.ua" sender="clars@i.ua">i'm here now</message>
+    <message id="5" moment="15:27:57 24-05-2020" receiver="clars@i.ua" sender="james@i.ua">yes i see</message>
+    <message id="6" moment="15:28:00 24-05-2020" receiver="clars@i.ua" sender="james@i.ua">how are you?</message>
+    <message id="7" moment="15:28:16 24-05-2020" receiver="General chat" sender="tom@i.ua">good day</message>
+    <message id="8" moment="15:28:26 24-05-2020" receiver="james@i.ua" sender="tom@i.ua">hi friend</message>
+    <message id="9" moment="14:18:18 05-06-2020" receiver="General chat" sender="he@i.ua">Hello</message>
+    <message id="10" moment="14:36:03 05-06-2020"
+        receiver="General chat" sender="tim@i.ua">hi</message>
 </messages>
 
